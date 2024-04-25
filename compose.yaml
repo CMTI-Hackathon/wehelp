@@ -1,0 +1,21 @@
+services:
+  http-server:
+    build:
+      context: ./http_server
+      dockerfile: ./Dockerfile
+    ports: 
+      - '8080:80'
+  users_db:
+    image: mariadb
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: justsomerootpassword
+  splitter:
+    build:
+      context: ./splitter
+      dockerfile: ./Dockerfile
+    ports: 
+      - '3035:3035'
+
+
+    
