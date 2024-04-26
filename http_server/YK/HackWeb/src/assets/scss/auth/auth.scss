@@ -1,0 +1,112 @@
+@import '../colors/colors';
+body{
+    color: $dark-green;
+    background-color: $white;
+}
+
+
+#change{
+    text-decoration: none;
+    color: $dark-green;
+    cursor: pointer;
+}
+
+#change:hover{
+    color: $green;
+}
+
+
+.body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100dvh;
+    width: 100dvw;
+}
+
+
+
+.container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    margin: 0;
+    background-color: $dark-white;
+    // background-color: $white;
+    height: 75%;
+    width: 75%;
+    border: 2px solid $dark-green;
+    border-radius: 20px;
+}
+
+.authContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 75%;
+    height: 100%;
+    border-left: 2px solid $dark-green;
+    text-align: center;
+}
+
+.auth-form{
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    *{
+        margin: 10px;
+    }
+
+    #submit{
+        background-color: $dark-green;
+        color: $white;
+        border-color: $white;
+    }
+
+    #submit:hover{
+        background-color: $white;
+        color: $dark-green;
+        border-color: $dark-green;
+    }
+
+    #name,#password, #email, #cPassword{
+        border-radius: 5px;
+        height: 25px;
+        font-size: medium;
+        border-color: $dark-green;
+        color: $dark-green;
+        background-color: $white;
+        // background-color: $dark-white;
+    }
+}
+
+.authBody{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logoContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: $green;
+    width: 25%;
+    height: 100%;
+    h3{
+        color: $white;
+    }
+}
+
+.logo{
+    text-align: center;
+    background-color: $white;
+    width: 250px;
+    height: 250px;
+}
+
+
+

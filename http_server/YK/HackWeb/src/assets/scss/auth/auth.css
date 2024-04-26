@@ -1,0 +1,99 @@
+body {
+  color: #627254;
+  background-color: #EEEEEE;
+}
+
+#change {
+  text-decoration: none;
+  color: #627254;
+  cursor: pointer;
+}
+
+#change:hover {
+  color: #76885B;
+}
+
+.body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100dvh;
+  width: 100dvw;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  margin: 0;
+  background-color: #DDDDDD;
+  height: 75%;
+  width: 75%;
+  border: 2px solid #627254;
+  border-radius: 20px;
+}
+
+.authContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 75%;
+  height: 100%;
+  border-left: 2px solid #627254;
+  text-align: center;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+}
+.auth-form * {
+  margin: 10px;
+}
+.auth-form #submit {
+  background-color: #627254;
+  color: #EEEEEE;
+  border-color: #EEEEEE;
+}
+.auth-form #submit:hover {
+  background-color: #EEEEEE;
+  color: #627254;
+  border-color: #627254;
+}
+.auth-form #name, .auth-form #password, .auth-form #email, .auth-form #cPassword {
+  border-radius: 5px;
+  height: 25px;
+  font-size: medium;
+  border-color: #627254;
+  color: #627254;
+  background-color: #EEEEEE;
+}
+
+.authBody {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logoContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #76885B;
+  width: 25%;
+  height: 100%;
+}
+.logoContainer h3 {
+  color: #EEEEEE;
+}
+
+.logo {
+  text-align: center;
+  background-color: #EEEEEE;
+  width: 250px;
+  height: 250px;
+}/*# sourceMappingURL=auth.css.map */
