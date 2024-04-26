@@ -1,7 +1,6 @@
-@import '../colors/colors';
+@import './colors', './wrapper';
 header{
     background-color: $white;
-    
     width: 100%;
     display: flex;
     position: sticky;
@@ -12,26 +11,27 @@ header{
     align-items: center;
     border-bottom: 1px solid $dark-green;
     z-index: 100;
-    .headerCont{
+    .headerConteiner{
+        @extend %wrapper;
         font-weight: 400;
-        height: 50px;
+        height: 45px;
         width: 100%;
         display: grid;
         gap: 10px;
         grid-template-columns: 1fr 2fr 1fr ;
         align-items: center;
         position: relative;
-       .logo{
+       .logoOfTheSite{
         justify-self: start;
         align-self: center;
         height: 30px;
         position: relative;
-        .logoPng{
+            .logoOfTheSitePng{
             height: 30px;
             width: auto;
             border-radius: 1000px;
+            }
         }
-       }
        .search{
         position: relative;
         height: 30px;
@@ -70,7 +70,7 @@ header{
             transition: all .3s;
             
             &:focus, &:hover{
-                box-shadow:  0px 0px 8px #76885ba1;
+                @include shadow1;
                 
             }   
             &:focus{
@@ -84,10 +84,10 @@ header{
             display: flex;
             align-items: center;
             gap: 10px;
-            list-style-type: none;
             li{
+            
                 a{
-                    text-decoration: none;
+                    
                     color: #627254;
                     padding: 6px;
                     transition: all .3s;

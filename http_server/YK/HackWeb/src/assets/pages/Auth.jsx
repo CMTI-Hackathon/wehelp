@@ -15,6 +15,7 @@ async function loginSend(e) {
 			email, password
 		})
 	})
+
 	// return response.json();
 	return false;
 }
@@ -25,9 +26,8 @@ function loginForm() {
 			<form onSubmit={loginSend} className='auth-form' id='loginform'>
 				<h2>Login into your account</h2>
 
-				{/* Change class name later */}
-				<input type="text" id='email' placeholder="Email" className="email" required />
-				<input type="password" id='password' placeholder="Password" className="password" required />
+				<input type="text" id='email' placeholder="Email"  required />
+				<input type="password" id='password' placeholder="Password"  required />
 				<button type="submit" id='submit'>Login</button>
 			</form>
 		</div>
@@ -70,12 +70,12 @@ function registerForm() {
 
 			<form onSubmit={registerSend} className='auth-form' id='registerform'>
 				<h2>Register your account</h2>
-				<input type="text" id='name' placeholder="Name" className="name" required />
-				<input type="email" id='email' placeholder="Email" className="email" required />
-				<input type="password" id='password' placeholder="Password" className="password"
+				<input type="text" id='name' placeholder="Name" required />
+				<input type="email" id='email' placeholder="Email"  required />
+				<input type="password" id='password' placeholder="Password" 
 					pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" title='Password must consist of least 8 characters and contain 
 			 at least one uppercase letter, one lowercase letter and a number' required />
-				<input type="password" id='cPassword' placeholder="Confirm Password" className="password"
+				<input type="password" id='cPassword' placeholder="Confirm Password" 
 					pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" required />
 
 				<div>
@@ -105,7 +105,7 @@ export default function Auth() {
 	function changeForm() {
 		setForm(current => !current)
 		let change = document.getElementById('change');
-		!isLogin ? change.innerText = "Already have an account? Login" : change.innerText = "First time here? Register";
+		!isLogin ? change.innerText = "Уже зареєстровані? Увійдіть" : change.innerText = "Перший раз тут? Зареєструватися";
 
 	}
 
@@ -120,7 +120,7 @@ export default function Auth() {
 				</div>
 				<div className='authContainer'>
 					{!isLogin ? loginForm() : registerForm()}
-					<p onClick={changeForm} id='change'>Already have an account? Login</p>
+					<p onClick={changeForm} id='change'>Уже зареєстровані? Увійдіть</p>
 				</div>
 			</div>
 
