@@ -1,4 +1,4 @@
-.formPage, header .headerConteiner {
+.chatbox, header .headerConteiner {
   max-width: 1100px;
   margin-left: auto;
   margin-right: auto;
@@ -198,107 +198,118 @@ header .headerConteiner .burgerMenu .account .log_in:hover, header .headerContei
   color: #EEEEEE;
 }
 
-.formPage, header .headerConteiner {
+.chatbox, header .headerConteiner {
   max-width: 1100px;
   margin-left: auto;
   margin-right: auto;
 }
 
-.formPage .formConteiner form .sendBtn {
-  border: 2px solid #627254;
-  border-radius: 6px;
-  color: #627254;
-  transition: all 0.3s;
-}
-.formPage .formConteiner form .sendBtn:hover {
-  cursor: pointer;
-  background-color: #76885B;
-  color: #EEEEEE;
-}
-
-@media only screen and (max-width: 768px) {
-  .navigation {
-    display: none;
-  }
-  .logoOfTheSite {
-    z-index: 3;
-  }
-  .burger {
-    display: flex;
-    z-index: 2;
-  }
-}
-@media only screen and (min-width: 769px) {
-  .burger {
-    display: none;
-  }
-}
-.formPage {
-  display: flex;
-  width: 100%;
-}
-.formPage .formConteiner {
-  width: 100%;
-  background-color: #DDDDDD;
-  padding: 24px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.formPage .formConteiner form {
+.chatContainer {
+  height: 100dvh;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  width: 100%;
 }
-.formPage .formConteiner form .title {
-  height: 3rem;
-  max-width: 40rem;
-  width: 100%;
-  border-radius: 10px;
-  border: 0px solid #627254;
-  padding-left: 10px;
-  outline: 0;
-  transition: all 0.3s;
+
+.body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  height: 100dvh;
+  width: 100dvw;
 }
-.formPage .formConteiner form .title:hover, .formPage .formConteiner form .title:focus {
-  box-shadow: 0px 0px 8px rgba(118, 136, 91, 0.631372549);
+
+.chatbox {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  flex: 1;
+  width: 75%;
+  border-left: 2px solid #627254;
+  border-right: 2px solid #627254;
+  background-color: #DDDDDD;
 }
-.formPage .formConteiner form .title:focus {
-  outline-style: solid;
-  outline-width: 1px;
-  outline-color: #627254;
-  border-radius: 10px;
+
+.msg-sent, .msg-received {
+  border: 2px solid #627254;
+  border-radius: 15px;
+  min-width: 10%;
+  max-width: 50%;
+  padding: 4px;
+  margin: 4px;
 }
-.formPage .formConteiner form .text {
-  border: 0;
-  outline: none;
-  border-bottom: 4px solid rgba(0, 0, 0, 0);
-  transition: all 0.3s;
-  border-radius: 10px 10px 0 0;
-  padding: 10px 10px 3px 10px;
-  position: relative;
-  max-width: 40rem;
-  width: 100%;
+
+.msg-received {
+  background-color: #EEEEEE;
+  color: #627254;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.msg-sent {
+  margin-left: auto;
+  background-color: #627254;
+  color: #EEEEEE;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.msgboxContainer {
+  border-top: 2px solid #627254;
+  background-color: #DDDDDD;
+  position: sticky;
+  z-index: 100;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin-top: auto;
+  padding: 8px;
+}
+
+.msgbox {
+  border-radius: 5px;
+  height: 34px;
+  max-height: 340px;
   resize: none;
+  overflow: visible;
+  font-size: medium;
+  border-color: #627254;
+  color: #627254;
+  background-color: #EEEEEE;
+  padding: 8px;
+  width: 63.5em;
 }
-.formPage .formConteiner form .text:hover {
-  box-shadow: 0px -2px 8px rgba(118, 136, 91, 0.631372549);
+
+.contactsInfo {
+  border-bottom: 2px solid #627254;
+  background-color: #DDDDDD;
+  position: sticky;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  right: 0;
+  padding: 8px;
 }
-.formPage .formConteiner form .text:focus {
-  border-bottom: 4px solid #627254;
-  box-shadow: 0px -2px 8px rgba(118, 136, 91, 0.631372549);
+
+.sendBtn {
+  position: absolute;
+  right: 0.6em;
+  bottom: 0.6em;
+  width: 2.2em;
+  height: 2.2em;
+  overflow: auto;
+  align-self: center;
+  cursor: pointer;
+  fill: #627254;
+  margin-left: 10px;
 }
-.formPage .formConteiner form .sendBtn {
-  height: 50px;
+.sendBtn :hover {
+  fill: #76885B;
 }
-.formPage .formConteiner form .typeOfHelp {
-  max-width: 20rem;
-  width: 100%;
-  height: 2rem;
-  border: 1px solid #627254;
-  border-radius: 6px;
-  padding-left: 10px;
-  outline: none;
-}/*# sourceMappingURL=form.css.map */
+
+@media screen and (max-width: 540px) {
+  .msgbox {
+    width: 80%;
+    overflow: hidden;
+  }
+}/*# sourceMappingURL=chat.css.map */
