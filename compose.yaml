@@ -14,9 +14,6 @@ services:
     restart: always
     environment:
       MARIADB_ROOT_PASSWORD: example_password
-      MARIADB_DATABASE: example_database
-      MARIADB_USER: example_user
-      MARIADB_PASSWORD: example_password
     volumes:
        - ./init.sql:/docker-entrypoint-initdb.d/init.sql
   splitter:
@@ -26,16 +23,9 @@ services:
     ports: 
       - '3035:3035'
   auth-service:
-    
-    environment:
-      MYSQL_HOST: mariadb_database
+    restart: on-failure
+    depends_on:
+      - mariadb_database
     build:
       context: ./auth-service
       dockerfile: ./Dockerfile
-
-networks:
-  frontend:
-    name: frontend
-    external: true
-  backend:
- 

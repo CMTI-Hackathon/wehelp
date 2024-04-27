@@ -18,6 +18,7 @@ type LoginData struct {
 }
 
 func registerUser(w http.ResponseWriter, r *http.Request) {
+	print("SomeRequest", r.URL.Path)
 	res, err := httputil.DumpRequest(r, true)
 	if r.Method != "POST" {
 		w.Write([]byte("{\"succes\" : false}"))
@@ -48,7 +49,7 @@ func registerUser(w http.ResponseWriter, r *http.Request) {
 
 }
 func main() {
-	http.HandleFunc("/registerUser", registerUser)
+	http.HandleFunc("/api/registerUser", registerUser)
 	log.Fatal(http.ListenAndServe(":3035", nil))
 
 }
