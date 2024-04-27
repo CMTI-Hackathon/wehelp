@@ -1,0 +1,39 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "user1"
+    },
+    {
+      "id": "2",
+      "name": "user2"
+    }
+  ],
+
+  "messages": [
+    {
+      "sessionid": "1",
+      "contactid": "2",
+      "message": "Hello",
+      "time": "12:00"
+    },
+    {
+      "sessionid": "2",
+      "contactid": "1",
+      "message": "Hello",
+      "time": "12:02"
+    },
+    {
+      "sessionid": "1",
+      "contactid": "2",
+      "message": "lorem",
+      "time": "12:03"
+    },
+    {
+      "sessionid": "1",
+      "contactid": "2",
+      "message": "lorem ipsum",
+      "time": "12:05"
+    }
+  ]
+}

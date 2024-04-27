@@ -1,5 +1,6 @@
 import {useState} from 'react'
 import helmet from './helmet.png'
+import {Link} from "react-router-dom"
 export default function Header(){
     const [arg, func]= useState(false);
     let isLogin = false;
@@ -26,8 +27,8 @@ export default function Header(){
                 
                 <nav className='navigation'>
                     <ul>
-                        <li><a href="">Home</a></li>
-                        <li><a href="">About</a></li>
+                        <li><Link to={"/auth"}>Home</Link></li>
+                        <li><Link to={"/chat/2"}>About</Link></li> {/* tmp */}
                       
                         <li><div className='account' >{isLogin?
                         

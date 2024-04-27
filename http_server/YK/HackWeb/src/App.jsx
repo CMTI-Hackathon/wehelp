@@ -9,13 +9,12 @@ import ChatPage from './assets/pages/Chat.jsx'
 function App() {
 
   return (
+    
     <BrowserRouter>
       <Routes>
-        {/* <Route path='/' element = {<HomePage/>}/> */}
-        {/* <Route path='/form' element = {<FormPage/>}/> */}
+        <Route index element = {<AuthPage/>}/>
         <Route path='/auth' element = {<AuthPage/>}/>
-        <Route path='/' element = {<AuthPage/>}/> {/*Temporary */}
-        <Route path='/chat' element = {<ChatPage/>}/>
+        <Route path='/chat/:id' element = {<ChatPage/>}/>
       </Routes>
     </BrowserRouter>
   )

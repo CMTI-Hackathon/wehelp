@@ -103,6 +103,38 @@
     height: 250px;
 }
 
+@media screen and (max-width: 540px) {
+    .logoContainer {
+        display: none;
+        
+    }
+
+    .auth-form{
+        width: 250px;
+    }
+
+    .authContainer{
+        border-left: none;
+    }
+
+    input[name="type"]{
+        clear: both;
+    }
+
+}
+
+@media screen and (min-width: 540px) and (max-width: 780px) {
+    .logo {
+        width: 75px;
+        height: 75px;
+    }
+    .auth-form{
+        width: 250px;
+        height: 50%;
+    }
+
+}
+
 // temporary -- probably redesign later
 #submit {
     border-radius: 8px;
