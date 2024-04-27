@@ -204,13 +204,13 @@ header .headerConteiner .burgerMenu .account .log_in:hover, header .headerContei
   margin-right: auto;
 }
 
-.formPage .formConteiner form .sendBtn {
+.formPage .formConteiner form .sendBtn1 {
   border: 2px solid #627254;
   border-radius: 6px;
   color: #627254;
   transition: all 0.3s;
 }
-.formPage .formConteiner form .sendBtn:hover {
+.formPage .formConteiner form .sendBtn1:hover {
   cursor: pointer;
   background-color: #76885B;
   color: #EEEEEE;
@@ -290,7 +290,7 @@ header .headerConteiner .burgerMenu .account .log_in:hover, header .headerContei
   border-bottom: 4px solid #627254;
   box-shadow: 0px -2px 8px rgba(118, 136, 91, 0.631372549);
 }
-.formPage .formConteiner form .sendBtn {
+.formPage .formConteiner form .sendBtn1 {
   height: 50px;
 }
 .formPage .formConteiner form .typeOfHelp {

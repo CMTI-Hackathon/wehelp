@@ -21,7 +21,7 @@ export default function FormPage(){
                                 <option value="">Підтримка</option>
                             </select>
                         </label>
-                        <input type="Submit" className='sendBtn' value='Опубліувати'/>
+                        <input type="Submit" className='sendBtn1' value='Опубліувати'/>
                     </form>
                 </div>
             </main>
