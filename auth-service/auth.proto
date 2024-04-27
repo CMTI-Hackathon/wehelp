@@ -2,7 +2,7 @@ syntax="proto3";
 option go_package="wehelp_goservice/grpc";
 
 
-service auth{
+service splitterAuth{
     rpc register(registerRequest)  returns (authResponse) {};
     rpc login(loginRequest) returns (authResponse){};
 }

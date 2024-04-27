@@ -24,11 +24,11 @@ type USER struct {
 	isHelper []uint8
 }
 type server struct {
-	pb.AuthServer
+	pb.SplitterAuthServer
 }
 
-func generateSession(userId string) int32 {
-	return 1
+func generateSession(userId string) string {
+	return "1"
 }
 func sessionExist(userId string, sessionId string) bool {
 	return true
@@ -36,13 +36,18 @@ func sessionExist(userId string, sessionId string) bool {
 func (s *server) Register(ctx context.Context, request *pb.RegisterRequest) (*pb.AuthResponse, error) {
 	var response pb.AuthResponse
 	println("Register request:", request.Email, request.Name, request.Password, request.IsHelper)
-	_, err := db.Exec("INSERT INTO users ( name, email, password, isHelper) VALUES ( '?', '?', '?', '?' )", request.Name, request.Email, request.Password, request.IsHelper)
-	if err != nil {
-		response.Succes = false
-		response.SessionId = ""
-		response.UserId = ""
-	}
-
+	db.Exec("INSERT INTO users ( name, email, password, isHelper) VALUES ( '?', '?', '?', '?' )", request.Name, request.Email, request.Password, request.IsHelper)
+	//if err != nil {
+	//	response.Succes = false
+	//	response.SessionId = ""
+	//	response.UserId = ""
+	//}
+	//println(res)
+	response.Succes = true
+	result := db.QueryRow("SELECT id FROM users WHERE name='?'", request.Name)
+	result.Scan(&response.UserId)
+	println("id :", response.UserId)
+	response.SessionId = generateSession(request.Name)
 	return &response, nil
 }
 func main() {
@@ -88,7 +93,7 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
-	pb.RegisterAuthServer(s, &server{})
+	pb.RegisterSplitterAuthServer(s, &server{})
 	log.Printf("server listening at %v", lis.Addr())
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)

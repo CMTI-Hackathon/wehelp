@@ -14,6 +14,8 @@ services:
     restart: always
     environment:
       MARIADB_ROOT_PASSWORD: example_password
+      MARIADB_USER : user
+      MARIDB_PASSWORD : example_password
     volumes:
        - ./init.sql:/docker-entrypoint-initdb.d/init.sql
   splitter:
