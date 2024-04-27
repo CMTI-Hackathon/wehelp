@@ -1,5 +1,6 @@
 import {useState} from 'react'
 import helmet from '/imgOfSite/helmet.png'
+import {Link} from "react-router-dom";
 export default function Header(){
     const [arg, func]= useState(false);
     const [isBurgClick, chBurgState] = useState(false);
@@ -36,8 +37,8 @@ export default function Header(){
                     </div>
                     <nav className={isBurgClick?'navigation active':'navigation'}>
                         <ul>
-                            <li><a href="">Home</a></li>
-                            <li><a href="">About</a></li>
+                            <li><Link to="/chats">Home</Link></li>
+                            <li><Link to="/forma">About</Link></li>
                         
                             <li><div className='account' >{isLogin?
                             
