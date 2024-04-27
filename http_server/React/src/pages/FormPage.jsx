@@ -4,14 +4,14 @@ export default function FormPage(){
     return(
         <div className="conteiner">
             <Header/>
-            <main>
+            <main className='formPage'>
                 <div className='formConteiner'>
                     <form action="">
                         <label htmlFor="">
-                            <input type="text" className='title' required placeholder='Короткий опис проблеми' />
+                            <input type="text" className='title' minLength='9' maxLength='40' required placeholder='Короткий опис проблеми' />
                         </label>
                         <label htmlFor="">
-                            <textarea required name="" className='text' id="" rows="10" placeholder='Опишіть проблему в загальному'></textarea>
+                            <textarea required name="" className='text' id="" rows="10" maxLength='900' minLength='40' placeholder='Опишіть проблему в загальному'></textarea>
                         </label>
                         <label htmlFor="">
                             <p>Допопмога, на яку ви очікуєте</p>

@@ -1,0 +1,11 @@
+@import '../../components/article';
+@import '../../components/wrapper';
+.homePage{
+    @extend %wrapper;
+    flex: 1;
+    article{
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+}

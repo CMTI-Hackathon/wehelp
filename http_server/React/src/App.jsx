@@ -1,5 +1,6 @@
 import FormPage from './pages/FormPage';
 import HomePage from './pages/HomePage';
+import ChatsMenegerPage from './pages/ChatsMenegerPage';
 import {
   BrowserRouter,
   Routes,
@@ -12,8 +13,9 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element = {<HomePage/>}/>
+        <Route index element = {<HomePage/>}/>
         <Route path='/forma' element = {<FormPage/>}/>
+        <Route path='/chats' element = {<ChatsMenegerPage/>}/>
       </Routes>
     </BrowserRouter>
   )

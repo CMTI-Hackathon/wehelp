@@ -1,4 +1,4 @@
-main, header .headerConteiner {
+.formPage, header .headerConteiner {
   max-width: 1100px;
   margin-left: auto;
   margin-right: auto;
@@ -32,11 +32,12 @@ header .headerConteiner {
   width: 100%;
   display: grid;
   gap: 10px;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: 1fr 3fr 1fr;
   align-items: center;
   position: relative;
 }
 header .headerConteiner .logoOfTheSite {
+  margin-left: 5px;
   justify-self: start;
   align-self: center;
   height: 30px;
@@ -94,12 +95,16 @@ header .headerConteiner .burgerMenu {
   justify-self: right;
 }
 header .headerConteiner .burgerMenu .burger {
+  z-index: 3;
   margin-right: 5px;
   position: relative;
   width: 23px;
   height: 20px;
   align-items: center;
   transition: all 0.5s;
+}
+header .headerConteiner .burgerMenu .burger:hover {
+  cursor: pointer;
 }
 header .headerConteiner .burgerMenu .burger span {
   background-color: black;
@@ -120,9 +125,6 @@ header .headerConteiner .burgerMenu .burger::before {
 }
 header .headerConteiner .burgerMenu .burger::after {
   bottom: 0;
-}
-header .headerConteiner .burgerMenu .burger.active {
-  z-index: 3;
 }
 header .headerConteiner .burgerMenu .burger.active::before {
   transform: rotate(45deg);
@@ -149,6 +151,10 @@ header .headerConteiner .burgerMenu .navigation.active {
 }
 header .headerConteiner .burgerMenu .navigation.active ul {
   flex-direction: column;
+  transform: scale(1.4);
+}
+header .headerConteiner .burgerMenu .navigation.active .account::before {
+  content: none;
 }
 header .headerConteiner .burgerMenu .navigation {
   transition: all 0.5s;
@@ -203,19 +209,19 @@ header .headerConteiner .burgerMenu .account button:hover {
   color: #EEEEEE;
 }
 
-main, header .headerConteiner {
+.formPage, header .headerConteiner {
   max-width: 1100px;
   margin-left: auto;
   margin-right: auto;
 }
 
-main .formConteiner form .sendBtn {
+.formPage .formConteiner form .sendBtn {
   border: 2px solid #627254;
   border-radius: 6px;
   color: #627254;
   transition: all 0.3s;
 }
-main .formConteiner form .sendBtn:hover {
+.formPage .formConteiner form .sendBtn:hover {
   cursor: pointer;
   background-color: #76885B;
   color: #EEEEEE;
@@ -233,16 +239,16 @@ main .formConteiner form .sendBtn:hover {
     z-index: 2;
   }
 }
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 769px) {
   .burger {
     display: none;
   }
 }
-main {
+.formPage {
   display: flex;
   width: 100%;
 }
-main .formConteiner {
+.formPage .formConteiner {
   width: 100%;
   background-color: #DDDDDD;
   padding: 24px;
@@ -251,13 +257,13 @@ main .formConteiner {
   align-items: center;
   justify-content: center;
 }
-main .formConteiner form {
+.formPage .formConteiner form {
   display: flex;
   flex-direction: column;
   gap: 20px;
   width: 100%;
 }
-main .formConteiner form .title {
+.formPage .formConteiner form .title {
   height: 3rem;
   max-width: 40rem;
   width: 100%;
@@ -267,16 +273,16 @@ main .formConteiner form .title {
   outline: 0;
   transition: all 0.3s;
 }
-main .formConteiner form .title:hover, main .formConteiner form .title:focus {
+.formPage .formConteiner form .title:hover, .formPage .formConteiner form .title:focus {
   box-shadow: 0px 0px 8px rgba(118, 136, 91, 0.631372549);
 }
-main .formConteiner form .title:focus {
+.formPage .formConteiner form .title:focus {
   outline-style: solid;
   outline-width: 1px;
   outline-color: #627254;
   border-radius: 10px;
 }
-main .formConteiner form .text {
+.formPage .formConteiner form .text {
   border: 0;
   outline: none;
   border-bottom: 4px solid rgba(0, 0, 0, 0);
@@ -288,13 +294,22 @@ main .formConteiner form .text {
   width: 100%;
   resize: none;
 }
-main .formConteiner form .text:hover {
+.formPage .formConteiner form .text:hover {
   box-shadow: 0px -2px 8px rgba(118, 136, 91, 0.631372549);
 }
-main .formConteiner form .text:focus {
+.formPage .formConteiner form .text:focus {
   border-bottom: 4px solid #627254;
   box-shadow: 0px -2px 8px rgba(118, 136, 91, 0.631372549);
 }
-main .formConteiner form .sendBtn {
+.formPage .formConteiner form .sendBtn {
   height: 50px;
+}
+.formPage .formConteiner form .typeOfHelp {
+  max-width: 20rem;
+  width: 100%;
+  height: 2rem;
+  border: 1px solid #627254;
+  border-radius: 6px;
+  padding-left: 10px;
+  outline: none;
 }/*# sourceMappingURL=form.css.map */
