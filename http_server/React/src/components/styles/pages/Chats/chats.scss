@@ -1,0 +1,42 @@
+@import '../../components/chatslink';
+@import '../../components/wrapper';
+@import '../../components/colors';
+.chatsPage{
+    flex: 1;
+    @extend %wrapper;
+    width: 100%;
+    background-color: $white;
+    .manageChats{
+       
+        ul{
+            display: flex;
+            flex-direction: row;
+            
+            border-bottom: 1px solid $green;
+            li{
+                display: flex;
+            }
+            .addChat{
+                height: 40px;
+                width: 40px;
+                fill:$dark-green;
+                &:hover{
+                    cursor: pointer;
+                    background-color: $green;
+                    fill: $white;
+                }
+            }
+            .deleteChat{
+                height: 40px;
+                width: 40px;
+                padding: 5px;
+                fill: $dark-green;
+                &:hover{
+                    cursor: pointer;
+                    background-color: $green;
+                    fill: $white;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,100 @@
+.article {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: #EEEEEE;
+  gap: 4px;
+  transition: all 0.3s;
+}
+.article:hover {
+  cursor: pointer;
+  background-color: rgba(118, 136, 91, 0.4431372549);
+}
+.article:hover .titleOfArticle p {
+  color: #EEEEEE;
+}
+.article:hover .textOfArticle p {
+  color: #DDDDDD;
+}
+.article .aboutProfile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.article .aboutProfile .writeTo {
+  border: 2px solid #627254;
+  color: #627254;
+  padding: 3px;
+  border-radius: 10px;
+  font-weight: 550;
+  font-size: 12pt;
+}
+.article .aboutProfile .writeTo:hover {
+  color: #EEEEEE;
+  background-color: #76885B;
+}
+.article .aboutProfile ul {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+.article .aboutProfile ul li {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.article .aboutProfile ul li .imgOfProfile {
+  width: 27px;
+  height: 27px;
+  border-radius: 100%;
+  transition: all 0.2s;
+}
+.article .aboutProfile ul li .imgOfProfile:hover {
+  transform: scale(1.2);
+}
+.article .aboutProfile ul .separator {
+  color: #627254;
+}
+.article .aboutProfile ul .nameOfProfile, .article .aboutProfile ul .dateOfPublication {
+  color: #627254;
+}
+.article .aboutProfile ul .nameOfProfile:hover, .article .aboutProfile ul .dateOfPublication:hover {
+  color: #EEEEEE;
+}
+.article .titleOfArticle {
+  color: #627254;
+}
+.article .titleOfArticle p {
+  transition: all 0.3s;
+  font-weight: 800;
+  font-size: 14pt;
+  text-align: justify;
+}
+.article .textOfArticle p {
+  transition: all 0.3s;
+  color: #627254;
+  font-size: 13pt;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  text-align: justify;
+}
+
+.homePage {
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.homePage {
+  flex: 1;
+}
+.homePage article {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}/*# sourceMappingURL=home.css.map */

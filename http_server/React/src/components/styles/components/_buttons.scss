@@ -1,0 +1,12 @@
+@import './colors';
+%green-btn{
+    border: 2px solid $dark-green;
+    border-radius: 6px;
+    color: $dark-green;
+    transition: all .3s;
+    &:hover{
+        cursor: pointer;
+        background-color: $green;
+        color: $white;
+    }
+}

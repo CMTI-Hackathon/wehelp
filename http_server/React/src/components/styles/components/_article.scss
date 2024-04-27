@@ -1,0 +1,97 @@
+@import './colors';
+
+.article{
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: $white;
+    gap: 4px;
+    transition: all .3s;
+    &:hover{
+        cursor: pointer;
+        background-color: #76885b71;
+    }
+    &:hover .titleOfArticle p{
+        color:$white;
+    }
+    &:hover .textOfArticle p{
+    
+        color:$dark-white;
+       
+    }
+    .aboutProfile{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        .writeTo{
+            border: 2px solid $dark-green;
+            color: $dark-green;
+            padding: 3px;
+            border-radius: 10px;
+            font-weight: 550;
+            font-size: 12pt;
+            &:hover{
+                color: $white;
+                background-color: $green;
+            }
+        }
+        ul{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+            
+            li{
+                height: 100%;
+                display: flex;
+                align-items: center;
+                .imgOfProfile{
+                    width: 27px;
+                    height: 27px;
+                    border-radius: 100%;
+                    transition: all .2s;
+                    &:hover{
+                        transform: scale(1.2);
+                    }
+                }
+            }
+            .separator{
+                color: $dark-green;
+            }
+            .nameOfProfile, .dateOfPublication{
+                color: $dark-green;
+                &:hover{
+                    color: $white;
+                }
+            }
+            
+        }
+        
+    }
+    .titleOfArticle{
+        color: $dark-green;
+        
+        p{
+            transition: all .3s;
+            font-weight: 800;
+            font-size: 14pt;
+            text-align: justify;
+        }
+        
+    }
+    .textOfArticle{
+        
+        p{
+            transition: all .3s;
+            color: $dark-green;
+            font-size: 13pt;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
+            text-align: justify;
+        }
+    }
+}

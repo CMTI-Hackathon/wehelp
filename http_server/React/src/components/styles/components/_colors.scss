@@ -1,0 +1,8 @@
+$dark-green:#627254;
+$green:#76885B;
+$dark-white:#DDDDDD;
+$white:#EEEEEE;
+
+@mixin shadow1($theme:#76885ba1){
+    box-shadow:  0px 0px 8px $theme;
+}
