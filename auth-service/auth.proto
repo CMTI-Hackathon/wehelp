@@ -1,0 +1,25 @@
+syntax="proto3";
+option go_package="wehelp_goservice/grpc";
+
+
+service splitterAuth{
+    rpc register(registerRequest)  returns (authResponse) {};
+    rpc login(loginRequest) returns (authResponse){};
+}
+message registerRequest{
+    string name = 1;
+    string password = 2;
+    string email = 3;
+    bool isHelper = 4;
+}
+
+message authResponse{
+    bool succes = 1;
+    string userId = 2;
+    string sessionId = 3;
+}
+message loginRequest{
+    string email = 1;
+    string password = 2;
+    
+}

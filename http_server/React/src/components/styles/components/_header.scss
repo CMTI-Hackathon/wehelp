@@ -1,0 +1,214 @@
+@import './colors', './wrapper';
+header.active::before{
+    content: "";
+    width: 100vw;
+    position: absolute;
+    height: 100%;
+    background-color: $green;
+    z-index: 3;
+}
+header{
+    background-color: $white;
+    width: 100%;
+    display: flex;
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 1px solid $dark-green;
+    z-index: 100;
+    .headerConteiner{
+        @extend %wrapper;
+        font-weight: 400;
+        height: 45px;
+        width: 100%;
+        display: grid;
+        gap: 10px;
+        grid-template-columns: 1fr 3fr 1fr ;
+        align-items: center;
+        position: relative;
+       .search{
+        position: relative;
+        height: 30px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        &::after{
+            content: "";
+            position: absolute;
+            width: .1px;
+            height: 100%;
+            background-color: $green;
+            top: 0px;
+            left: 30px;
+        }
+        .searchIcon{
+            height: 60%;
+            width: auto;
+            position: absolute;
+            top: 5x;
+            left: 5px;
+            fill: $dark-green;
+            z-index: 2;
+        }
+        .searchInp{
+            width: 100%;
+            height: 30px;
+            border: 0;
+        
+            outline-width: 0px;
+            outline-style: solid;
+            outline-color: $dark-green;
+            border-radius: 10px;
+            position: relative;
+            padding-left: 35px;
+            transition: all .3s;
+            
+            &:focus, &:hover{
+                @include shadow1;
+                
+            }   
+            &:focus{
+                outline-width: 1px;
+            }      
+        }
+       }
+       .burgerMenu{
+        justify-self: right;
+     
+        .burger{
+            &:hover{
+                cursor: pointer;
+            }
+            z-index: 3;
+            margin-right: 5px;
+            position: relative;
+            width: 23px;
+            height: 20px;
+            align-items: center;
+            transition: all .5s;
+            span{
+                background-color: black;
+                width: 100%;
+                height: 4px;
+            }
+            &::before, &::after{
+                content: '';
+                background-color: black;
+                position: absolute;
+                height: 4px;
+                width: 100%;
+                display: block;
+                transition: all .5s;
+            }
+            &::before{
+                top: 0;
+            }
+            &::after{
+                bottom: 0;
+            }
+        }
+        .burger.active{
+            
+            &::before{
+                transform: rotate(45deg);
+                top: 8px;
+            }
+            &::after{
+                transform: rotate(-45deg);
+                bottom: 8px;
+            }
+            span{
+                display: none;
+            }
+        }
+        .navigation.active{
+            
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            background-color: $white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            ul{
+                flex-direction: column;
+                transform: scale(1.4);
+            }
+            z-index: 2;
+            .account{
+                &::before{
+                    content: none;
+                }
+            
+            }
+        }
+        .navigation{
+            transition: all .5s;
+            justify-self: right;
+            ul{
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                li{
+                
+                    a{
+                        
+                        color: #627254;
+                        padding: 6px;
+                        transition: all .3s;
+                        border-radius: 10px;
+                        &:hover{
+                            background-color: #76885ba1;
+                            color: $white;  
+                        }
+                    }
+                    .imgOfYourProfile{
+                        border-radius: 100px;
+                        height: 30px;
+                        transition: all .3s;
+                        &:hover{
+                            transform: scale(1.2);
+                            cursor: pointer;
+                        }
+                        
+                    }
+                
+                   
+                }
+            }
+       }
+       
+        .account{
+            &::before{
+                content: "";
+                width: 1px;
+                background-color: $dark-green;
+
+            }
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            height: 30px;
+            .log_in, .sign_in{
+                display: flex;
+                align-items: center;
+                padding: 5px;
+                border: 2px solid $dark-green;
+                border-radius: 6px;
+                color: $dark-green;
+                transition: all .3s;
+                &:hover{
+                    cursor: pointer;
+                    background-color: $green;
+                    color: $white;
+                }
+            }
+        }
+       } 
+    }
+}

@@ -1,0 +1,315 @@
+.chatbox, header .headerConteiner {
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+header.active::before {
+  content: "";
+  width: 100vw;
+  position: absolute;
+  height: 100%;
+  background-color: #76885B;
+  z-index: 3;
+}
+
+header {
+  background-color: #EEEEEE;
+  width: 100%;
+  display: flex;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid #627254;
+  z-index: 100;
+}
+header .headerConteiner {
+  font-weight: 400;
+  height: 45px;
+  width: 100%;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr 3fr 1fr;
+  align-items: center;
+  position: relative;
+}
+header .headerConteiner .search {
+  position: relative;
+  height: 30px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+header .headerConteiner .search::after {
+  content: "";
+  position: absolute;
+  width: 0.1px;
+  height: 100%;
+  background-color: #76885B;
+  top: 0px;
+  left: 30px;
+}
+header .headerConteiner .search .searchIcon {
+  height: 60%;
+  width: auto;
+  position: absolute;
+  top: 5x;
+  left: 5px;
+  fill: #627254;
+  z-index: 2;
+}
+header .headerConteiner .search .searchInp {
+  width: 100%;
+  height: 30px;
+  border: 0;
+  outline-width: 0px;
+  outline-style: solid;
+  outline-color: #627254;
+  border-radius: 10px;
+  position: relative;
+  padding-left: 35px;
+  transition: all 0.3s;
+}
+header .headerConteiner .search .searchInp:focus, header .headerConteiner .search .searchInp:hover {
+  box-shadow: 0px 0px 8px rgba(118, 136, 91, 0.631372549);
+}
+header .headerConteiner .search .searchInp:focus {
+  outline-width: 1px;
+}
+header .headerConteiner .burgerMenu {
+  justify-self: right;
+}
+header .headerConteiner .burgerMenu .burger {
+  z-index: 3;
+  margin-right: 5px;
+  position: relative;
+  width: 23px;
+  height: 20px;
+  align-items: center;
+  transition: all 0.5s;
+}
+header .headerConteiner .burgerMenu .burger:hover {
+  cursor: pointer;
+}
+header .headerConteiner .burgerMenu .burger span {
+  background-color: black;
+  width: 100%;
+  height: 4px;
+}
+header .headerConteiner .burgerMenu .burger::before, header .headerConteiner .burgerMenu .burger::after {
+  content: "";
+  background-color: black;
+  position: absolute;
+  height: 4px;
+  width: 100%;
+  display: block;
+  transition: all 0.5s;
+}
+header .headerConteiner .burgerMenu .burger::before {
+  top: 0;
+}
+header .headerConteiner .burgerMenu .burger::after {
+  bottom: 0;
+}
+header .headerConteiner .burgerMenu .burger.active::before {
+  transform: rotate(45deg);
+  top: 8px;
+}
+header .headerConteiner .burgerMenu .burger.active::after {
+  transform: rotate(-45deg);
+  bottom: 8px;
+}
+header .headerConteiner .burgerMenu .burger.active span {
+  display: none;
+}
+header .headerConteiner .burgerMenu .navigation.active {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  background-color: #EEEEEE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+header .headerConteiner .burgerMenu .navigation.active ul {
+  flex-direction: column;
+  transform: scale(1.4);
+}
+header .headerConteiner .burgerMenu .navigation.active .account::before {
+  content: none;
+}
+header .headerConteiner .burgerMenu .navigation {
+  transition: all 0.5s;
+  justify-self: right;
+}
+header .headerConteiner .burgerMenu .navigation ul {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+header .headerConteiner .burgerMenu .navigation ul li a {
+  color: #627254;
+  padding: 6px;
+  transition: all 0.3s;
+  border-radius: 10px;
+}
+header .headerConteiner .burgerMenu .navigation ul li a:hover {
+  background-color: rgba(118, 136, 91, 0.631372549);
+  color: #EEEEEE;
+}
+header .headerConteiner .burgerMenu .navigation ul li .imgOfYourProfile {
+  border-radius: 100px;
+  height: 30px;
+  transition: all 0.3s;
+}
+header .headerConteiner .burgerMenu .navigation ul li .imgOfYourProfile:hover {
+  transform: scale(1.2);
+  cursor: pointer;
+}
+header .headerConteiner .burgerMenu .account {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  height: 30px;
+}
+header .headerConteiner .burgerMenu .account::before {
+  content: "";
+  width: 1px;
+  background-color: #627254;
+}
+header .headerConteiner .burgerMenu .account .log_in, header .headerConteiner .burgerMenu .account .sign_in {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  border: 2px solid #627254;
+  border-radius: 6px;
+  color: #627254;
+  transition: all 0.3s;
+}
+header .headerConteiner .burgerMenu .account .log_in:hover, header .headerConteiner .burgerMenu .account .sign_in:hover {
+  cursor: pointer;
+  background-color: #76885B;
+  color: #EEEEEE;
+}
+
+.chatbox, header .headerConteiner {
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.chatContainer {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  height: 100dvh;
+  width: 100dvw;
+}
+
+.chatbox {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  flex: 1;
+  width: 75%;
+  border-left: 2px solid #627254;
+  border-right: 2px solid #627254;
+  background-color: #DDDDDD;
+}
+
+.msg-sent, .msg-received {
+  border: 2px solid #627254;
+  border-radius: 15px;
+  min-width: 10%;
+  max-width: 50%;
+  padding: 4px;
+  margin: 4px;
+}
+
+.msg-received {
+  background-color: #EEEEEE;
+  color: #627254;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.msg-sent {
+  margin-left: auto;
+  background-color: #627254;
+  color: #EEEEEE;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.msgboxContainer {
+  border-top: 2px solid #627254;
+  background-color: #DDDDDD;
+  position: sticky;
+  z-index: 100;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin-top: auto;
+  padding: 8px;
+}
+
+.msgbox {
+  border-radius: 5px;
+  height: 34px;
+  max-height: 340px;
+  resize: none;
+  overflow: visible;
+  font-size: medium;
+  border-color: #627254;
+  color: #627254;
+  background-color: #EEEEEE;
+  padding: 8px;
+  width: 63.5em;
+}
+
+.contactsInfo {
+  border-bottom: 2px solid #627254;
+  background-color: #DDDDDD;
+  position: sticky;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  right: 0;
+  padding: 8px;
+}
+
+.sendBtn {
+  position: absolute;
+  right: 0.6em;
+  bottom: 0.6em;
+  width: 2.2em;
+  height: 2.2em;
+  overflow: auto;
+  align-self: center;
+  cursor: pointer;
+  fill: #627254;
+  margin-left: 10px;
+}
+.sendBtn :hover {
+  fill: #76885B;
+}
+
+@media screen and (max-width: 540px) {
+  .msgbox {
+    width: 80%;
+    overflow: hidden;
+  }
+}/*# sourceMappingURL=chat.css.map */

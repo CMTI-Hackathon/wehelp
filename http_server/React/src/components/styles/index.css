@@ -1,0 +1,33 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Source Sans 3", sans-serif;
+  font-size: 12pt;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+ul, li {
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+.conteiner {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+  padding-bottom: 20px;
+}
+
+#root {
+  height: 100%;
+}/*# sourceMappingURL=index.css.map */

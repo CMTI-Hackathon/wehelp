@@ -5,19 +5,17 @@ services:
       dockerfile: ./Dockerfile
     ports: 
       - '8080:80'
-  mariadb_database:
+  mariadb-database:
     hostname: "127.0.0.1"
-    networks:
-      - backend
+    
     image: mariadb
     ports:
       - '3306:3306'
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: example_password
-      MYSQL_DATABASE: example_database
-      MYSQL_USER: example_user
-      MYSQL_PASSWORD: example_password
+      MARIADB_ROOT_PASSWORD: example_password
+      MARIADB_USER : user
+      MARIDB_PASSWORD : example_password
     volumes:
        - ./init.sql:/docker-entrypoint-initdb.d/init.sql
   splitter:
@@ -27,19 +25,9 @@ services:
     ports: 
       - '3035:3035'
   auth-service:
-    networks:
-       backend:
-        aliases:
-          - "mariadb_database"
-    environment:
-      MYSQL_HOST: mariadb_database
+    restart: on-failure
+    depends_on:
+      - mariadb-database
     build:
       context: ./auth-service
       dockerfile: ./Dockerfile
-
-networks:
-  frontend:
-    name: frontend
-    external: true
-  backend:
- 
