@@ -5,7 +5,7 @@ services:
       dockerfile: ./Dockerfile
     ports: 
       - '8080:80'
-  mariadb_database:
+  mariadb-database:
     hostname: "127.0.0.1"
     
     image: mariadb
@@ -27,7 +27,7 @@ services:
   auth-service:
     restart: on-failure
     depends_on:
-      - mariadb_database
+      - mariadb-database
     build:
       context: ./auth-service
       dockerfile: ./Dockerfile

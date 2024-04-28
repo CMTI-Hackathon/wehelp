@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"strconv"
 
 	pb "wehelp_goservice/grpc"
 
@@ -13,7 +14,14 @@ import (
 	"google.golang.org/grpc"
 )
 
-var db *sql.DB
+var cfg = mysql.Config{
+	User:                 "root",
+	Passwd:               "example_password",
+	Net:                  "tcp",
+	Addr:                 "mariadb-database:3306",
+	DBName:               "usersdb",
+	AllowNativePasswords: true,
+}
 
 type BitBool bool
 type USER struct {
@@ -27,38 +35,83 @@ type server struct {
 	pb.SplitterAuthServer
 }
 
-func generateSession(userId string) string {
-	return "1"
+func deleteOldSessions() {
+	db, err := sql.Open("mysql", cfg.FormatDSN())
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+	res, err := db.Exec("DELETE FROM user_sessions WHERE creationDate < (NOW() - INTERVAL 1 MINUTE)")
+	if err != nil {
+		println(res, err.Error())
+	}
+
 }
-func sessionExist(userId string, sessionId string) bool {
-	return true
+func generateSession(userId int) string {
+	db, err := sql.Open("mysql", cfg.FormatDSN())
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+	defer deleteOldSessions()
+	var session_id int64
+	res, err := db.Exec("INSERT INTO user_sessions (id, creationDate) VALUES (?, NOW())", userId)
+	if err != nil {
+		println(err.Error())
+	}
+	if err != nil {
+		rows := db.QueryRow("SELECT session_id FROM user_sessions WHERE id = ?", userId)
+		err = rows.Scan(&session_id)
+		if err != nil {
+			log.Fatal("can't get session_id of user")
+		}
+		return strconv.Itoa(int(session_id))
+
+	}
+	session_id, err = res.LastInsertId()
+
+	if err != nil {
+		log.Fatal("something went wrong")
+	}
+	return strconv.Itoa(int(session_id))
+
 }
+
 func (s *server) Register(ctx context.Context, request *pb.RegisterRequest) (*pb.AuthResponse, error) {
-	var response pb.AuthResponse
+	defer deleteOldSessions()
+
 	println("Register request:", request.Email, request.Name, request.Password, request.IsHelper)
-	db.Exec("INSERT INTO users ( name, email, password, isHelper) VALUES ( '?', '?', '?', '?' )", request.Name, request.Email, request.Password, request.IsHelper)
-	//if err != nil {
-	//	response.Succes = false
-	//	response.SessionId = ""
-	//	response.UserId = ""
-	//}
-	//println(res)
+	var response *pb.AuthResponse = &pb.AuthResponse{}
+	db, err := sql.Open("mysql", cfg.FormatDSN())
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	res, err := db.Exec("INSERT INTO users ( name, email, password, isHelper) VALUES ( ?, ?, ?, ? )", request.Name, request.Email, request.Password, request.IsHelper)
+	if err != nil {
+		response.UserId = ""
+		response.Succes = false
+		response.SessionId = ""
+		return response, nil
+	}
+
+	//var user USER
+	id, err := res.LastInsertId()
+	if err != nil {
+		response.UserId = ""
+		response.Succes = false
+		response.SessionId = ""
+		return response, nil
+	}
 	response.Succes = true
-	result := db.QueryRow("SELECT id FROM users WHERE name='?'", request.Name)
-	result.Scan(&response.UserId)
+	response.UserId = strconv.Itoa(int(id))
 	println("id :", response.UserId)
-	response.SessionId = generateSession(request.Name)
-	return &response, nil
+	response.SessionId = generateSession(int(id))
+	return response, nil
 }
 func main() {
-	cfg := mysql.Config{
-		User:                 "root",
-		Passwd:               "example_password",
-		Net:                  "tcp",
-		Addr:                 "mariadb_database:3306",
-		DBName:               "usersdb",
-		AllowNativePasswords: true,
-	}
+
 	db, err := sql.Open("mysql", cfg.FormatDSN())
 
 	if err != nil {
@@ -74,20 +127,7 @@ func main() {
 		return
 	}
 	//println(res)
-	rows, err := db.Query("SELECT * FROM usersdb.users;")
-	var user USER
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
-	for rows.Next() {
-		err = rows.Scan(&user.Id, &user.Name, &user.Email, &user.Password, &user.isHelper)
-		if err != nil {
-			log.Fatal(err)
-			continue
-		}
-		println(user.Name, user.Email)
-	}
+
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 4011))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
