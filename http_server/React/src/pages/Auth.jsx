@@ -121,7 +121,6 @@ function registerForm() {
 
 
 				<button type="submit" id='submit'>Реєстрація</button>
-				<li><Link to={"/chats"}>Go to chats temporary</Link></li> {/* tmp */}
 			</form>
 
 		</div>
