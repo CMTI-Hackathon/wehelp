@@ -1,6 +1,6 @@
-import '../scss/auth/auth.css'
-import '/src/assets/jquery-3.7.1.min.js'
+import '../components/styles/pages/Auth/auth.css'
 import React, { useState, useEffect } from 'react'
+import { Link } from "react-router-dom"
 
 async function loginSend(e) {
 	e.preventDefault();
@@ -16,38 +16,37 @@ async function loginSend(e) {
 		})
 	})
 
-	// return response.json();
-	return false;
+	if(response.json().valid == true){
+		<Link to="/chat/2"></Link>
+	}else{
+		return false;
+	}
 }
 
 function loginForm() {
 	return (
 		<div className='authBody'>
 			<form onSubmit={loginSend} className='auth-form' id='loginform'>
-				<h2>Login into your account</h2>
+				<h2>Увійдіть у свій аккаунт</h2>
 
-				<input type="text" id='email' placeholder="Email"  required />
-				<input type="password" id='password' placeholder="Password"  required />
-				<button type="submit" id='submit'>Login</button>
+				<input type="text" id='email' placeholder="Електронна пошта"  required />
+				<input type="password" id='password' placeholder="Пароль"  required />
+				<button type="submit" id='submit'>Вхід</button>
 			</form>
 		</div>
 	);
 }
 
-
-
 async function registerSend(e) {
 	e.preventDefault();
 
-	const password = document.getElementById("password");
-	if (!(password === document.getElementById("cPassword"))) { return false };
 
-	const username = document.getElementById("name");
+	const password = document.getElementById("password").value;
+	if (!(password === document.getElementById("cPassword").value)) { return false };
 
-	// add check if email is taken
-	const email = document.getElementById("email");
-
-	const role = document.getElementById("helper").checked;
+	const username = document.getElementById("name").value;
+	const email = document.getElementById("email").value;
+	const role = document.querySelector('input[name="type"]:checked').value == "Helper";
 
 
 	const response = await fetch('/api/registerUser', {
@@ -59,37 +58,52 @@ async function registerSend(e) {
 			username, email, password, role
 		})
 	})
-	// return response.json();
-	return true;
+	.then(res =>{
+		if(!res.ok){
+			throw new Error(`HTTP error ${res.status}`);
+		}
+		return res.json();
+	})
+	.catch((error) => console.error("Error:",error));
+
+	
+	if(response.success === true){
+		window.location.pathname = '/';
+	}else{
+		return false;
+	}
 }
 
 function registerForm() {
 
 	return (
 		<div className='authBody'>
-
 			<form onSubmit={registerSend} className='auth-form' id='registerform'>
-				<h2>Register your account</h2>
-				<input type="text" id='name' placeholder="Name" required />
-				<input type="email" id='email' placeholder="Email"  required />
-				<input type="password" id='password' placeholder="Password" 
+				<h2>Зареєструйте свій аккаунт</h2>
+				<input type="text" id='name' placeholder="Ім'я" required />
+				<input type="email" id='email' placeholder="Електронна пошта"  required />
+				<input type="password" id='password' placeholder="Пароль" 
 					pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" title='Password must consist of least 8 characters and contain 
 			 at least one uppercase letter, one lowercase letter and a number' required />
-				<input type="password" id='cPassword' placeholder="Confirm Password" 
+				<input type="password" id='cPassword' placeholder="Підтвердження паролю" 
 					pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" required />
 
-				<div>
-					<span> Register as: </span>
+				<div id='choice'>
+					<span> Зареєструватися як: </span>
 
-					<input type="radio" id="user" name="type" value="User" checked />
-					<label for="user">User</label>
-
-					<input type="radio" id="helper" name="type" value="Helper" />
-					<label for="helper">Helper</label>
+					<div>
+						<input type="radio" id="user" name="type" value="User" checked />
+						<label for="user">Користувач</label>
+					</div>
+					<div>
+						<input type="radio" id="helper" name="type" value="Helper" />
+						<label for="helper">Помічник</label>
+					</div>
 				</div>
 
 
-				<button type="submit" id='submit'>Register</button>
+				<button type="submit" id='submit'>Реєстрація</button>
+				<li><Link to={"/chats"}>Go to chats temporary</Link></li> {/* tmp */}
 			</form>
 
 		</div>
@@ -112,7 +126,6 @@ export default function Auth() {
 	return (
 
 		<div className='body'>
-
 			<div className='container'>
 				<div className='logoContainer'>
 					<img src="" alt="LOGO" className='logo' />

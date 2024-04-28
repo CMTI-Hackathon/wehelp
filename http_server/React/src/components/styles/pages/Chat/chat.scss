@@ -1,0 +1,118 @@
+//sass --watch ./src/assets/scss/requests/_requests.scss ./src/assets/scss/requests/requests.css  
+
+@import '../../components/header', '../../components/colors', '../../components/wrapper';
+
+.chatContainer{
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
+
+.body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    height: 100dvh;
+    width: 100dvw;
+}
+
+.chatbox{
+    @extend %wrapper;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    flex:1;
+    width: 75%;
+    border-left: 2px solid $dark-green;
+    border-right: 2px solid $dark-green;
+    background-color: $dark-white;
+}
+
+%msg{
+    border: 2px solid $dark-green;
+    border-radius: 15px;
+    min-width: 10%;
+    max-width: 50%;
+    padding: 4px;
+    margin: 4px
+}
+
+.msg-received{
+    @extend %msg;
+    background-color: $white;
+    color: $dark-green;
+    width: fit-content;
+}
+
+.msg-sent{
+    @extend %msg;
+    margin-left: auto;
+    background-color: $dark-green;
+    color: $white;
+    width: fit-content;
+}
+
+.msgboxContainer{
+    border-top: 2px solid $dark-green;
+    background-color: $dark-white;
+    position: sticky;
+    z-index: 100;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin-top: auto;
+    padding: 8px;
+}
+
+.msgbox{
+    border-radius: 5px;
+    height: 34px;
+    max-height: 340px;
+    // height: 25px;
+    resize:none;
+    overflow:visible;
+    font-size: medium;
+    border-color: $dark-green;
+    color: $dark-green;
+    background-color: $white;
+
+    padding: 8px;
+    width: 63.5em;
+}
+
+.contactsInfo{
+    border-bottom: 2px solid $dark-green;
+    background-color: $dark-white;
+    position: sticky;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    right: 0;
+    padding: 8px;
+}
+
+.sendBtn{
+    position: absolute;
+    right: 0.6em;
+    bottom: 0.6em;
+    // width: 25px;
+    // height: 25px;
+    width: 2.2em;
+    height: 2.2em;
+    overflow: auto;
+    align-self: center;
+    cursor: pointer;
+    fill:$dark-green;
+    margin-left: 10px;
+    :hover{
+        fill:$green;
+    }
+}
+
+@media screen and (max-width: 540px) {
+    .msgbox{
+        width: 80%;
+        overflow: hidden;
+    }
+}
