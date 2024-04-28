@@ -1,0 +1,127 @@
+header {
+  background-color: #EEEEEE;
+  width: 100%;
+  display: flex;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid #627254;
+  z-index: 100;
+}
+header .headerCont {
+  font-weight: 400;
+  height: 50px;
+  width: 100%;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: center;
+  position: relative;
+}
+header .headerCont .logo {
+  justify-self: start;
+  align-self: center;
+  height: 30px;
+  position: relative;
+}
+header .headerCont .logo .logoPng {
+  height: 30px;
+  width: auto;
+  border-radius: 1000px;
+}
+header .headerCont .search {
+  position: relative;
+  height: 30px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+header .headerCont .search::after {
+  content: "";
+  position: absolute;
+  width: 0.1px;
+  height: 100%;
+  background-color: #76885B;
+  top: 0px;
+  left: 30px;
+}
+header .headerCont .search .searchIcon {
+  height: 60%;
+  width: auto;
+  position: absolute;
+  top: 5x;
+  left: 5px;
+  z-index: 2;
+  fill: #627254;
+}
+header .headerCont .search .searchInp {
+  width: 100%;
+  height: 30px;
+  border: 0;
+  outline-width: 0px;
+  outline-style: solid;
+  outline-color: #627254;
+  border-radius: 10px;
+  position: relative;
+  padding-left: 35px;
+  transition: all 0.3s;
+}
+header .headerCont .search .searchInp:focus, header .headerCont .search .searchInp:hover {
+  box-shadow: 0px 0px 8px rgba(118, 136, 91, 0.631372549);
+}
+header .headerCont .search .searchInp:focus {
+  outline-width: 1px;
+}
+header .headerCont .navigation {
+  justify-self: right;
+}
+header .headerCont .navigation ul {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  list-style-type: none;
+}
+header .headerCont .navigation ul li a {
+  text-decoration: none;
+  color: #627254;
+  padding: 6px;
+  transition: all 0.3s;
+  border-radius: 10px;
+}
+header .headerCont .navigation ul li a:hover {
+  background-color: rgba(118, 136, 91, 0.631372549);
+  color: #EEEEEE;
+}
+header .headerCont .navigation ul li .imgOfYourProfile {
+  border-radius: 100px;
+  height: 30px;
+  transition: all 0.3s;
+}
+header .headerCont .navigation ul li .imgOfYourProfile:hover {
+  transform: scale(1.2);
+  cursor: pointer;
+}
+header .headerCont .navigation .account {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  height: 30px;
+}
+header .headerCont .navigation .account button {
+  height: 30px;
+  width: 55px;
+  border: 2px solid #627254;
+  border-radius: 6px;
+  color: #627254;
+  transition: all 0.3s;
+}
+header .headerCont .navigation .account button:hover {
+  cursor: pointer;
+  background-color: #76885B;
+  color: #EEEEEE;
+}
+
+/*# sourceMappingURL=header.css.map */
