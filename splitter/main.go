@@ -263,7 +263,7 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 }
 
 func getLastPosts(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "POST" {
+	if r.Method != "GET" {
 		w.Write([]byte("{}"))
 		return
 	}
@@ -288,13 +288,14 @@ func getPost(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("{}"))
 		return
 	}
-	conn, err := grpc.Dial("auth-service:4011", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial("post-service:4012", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		println("error:", err.Error())
 		w.Write([]byte("{}"))
 		return
 	}
 	client := pb.NewPostServiceClient(conn)
+
 	response, err := client.GetPost(context.Background(), &pb.Post{PostId: vals.Get("id")})
 	if err != nil {
 		println("error:", err.Error())
@@ -318,7 +319,7 @@ func main() {
 	http.HandleFunc("/api/getUserById", getUserById)
 	http.HandleFunc("/api/createPost", createPost)
 	http.HandleFunc("/api/getPosts", getLastPosts)
-	http.HandleFunc("/api/getPost", getLastPosts)
+	http.HandleFunc("/api/getPost", getPost)
 
 	log.Fatal(http.ListenAndServe(":4010", nil))
 

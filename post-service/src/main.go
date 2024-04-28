@@ -48,9 +48,23 @@ func (s *server) CreatePost(ctx context.Context, request *pb.Post) (*pb.Result, 
 	result.Id = strconv.Itoa(int(postid))
 	return &result, nil
 }
-func (s *server) GetPost(context.Context, *pb.Post) (*pb.Post, error) {
+func (s *server) GetPost(context context.Context, request *pb.Post) (*pb.Post, error) {
 	var result pb.Post
+	println("Get post request", request.UserId, request.Header, request.Text, request.Type)
 
+	db, err := sql.Open("mysql", cfg.FormatDSN())
+	if err != nil {
+
+		log.Fatal(err)
+	}
+	defer db.Close()
+	res := db.QueryRow("SELECT header,text, type, userId FROM posts WHERE id= ?", request.PostId)
+	err = res.Scan(&result.Header, &result.Text, &result.Type, &result.UserId)
+	result.PostId = request.PostId
+	if err != nil {
+		println(err.Error())
+		return &pb.Post{}, nil
+	}
 	return &result, nil
 }
 
