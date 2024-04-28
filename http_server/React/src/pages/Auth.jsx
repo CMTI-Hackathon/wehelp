@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom"
 
 async function loginSend(e) {
 	e.preventDefault();
+	const history = useNavigate();
 	const email = document.getElementById("email").value;
 	const password = document.getElementById("password").value;
 	const response = await fetch('/api/login', {
@@ -27,7 +28,10 @@ async function loginSend(e) {
 
 	console.log(response.success)
 	if(response.success === true){
-		window.location.pathname = '/';
+		useEffect(()=>{
+			localStorage.setItem('userId',response.id)
+		});
+		history('/auth');
 	}else{
 		return false;
 	}
@@ -78,7 +82,11 @@ async function registerSend(e) {
 
 	
 	if(response.success === true){
-		window.location.pathname = '/';
+		useEffect(()=>{
+			localStorage.setItem('userId',response.id)
+		});
+		history('/auth');
+		// window.location.pathname = '/';
 	}else{
 		return false;
 	}
