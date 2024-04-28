@@ -1,6 +1,9 @@
 import '../components/styles/pages/Auth/auth.css'
 import React, { useState, useEffect } from 'react'
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import Cookies from 'js-cookie';
+
+
 
 async function loginSend(e) {
 	e.preventDefault();
@@ -119,6 +122,20 @@ function registerForm() {
 }
 
 export default function Auth() {
+	const history = useNavigate();
+	
+	useEffect(()=>{
+		let cookie = undefined;
+		const value = `; ${document.cookie}`;
+		const parts = value.split(`; ${"session_id"}=`);
+		if (parts.length === 2) cookie = parts.pop().split(';').shift();
+		console.log(cookie)
+		if(cookie !== undefined){
+			history('/');
+		}
+
+	})
+
 	const [isLogin, setForm] = useState(true);
 	useEffect(() => {
 		document.title = "Authorization";

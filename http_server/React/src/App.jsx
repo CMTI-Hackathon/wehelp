@@ -8,12 +8,13 @@ import {
   Routes,
   Route,
   Link,
+  HashRouter,
 } from "react-router-dom";
 function App() {
  
 
   return (
-    <BrowserRouter>
+    <HashRouter basename='/'>
       <Routes>
         <Route index element = {<HomePage/>}/>
         <Route path='/forma' element = {<FormPage/>}/>
@@ -21,7 +22,8 @@ function App() {
         <Route path='/auth' element = {<Auth/>}/>
         <Route path='/chat/:id' element = {<Chat/>}/>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
+    
   )
 }
 

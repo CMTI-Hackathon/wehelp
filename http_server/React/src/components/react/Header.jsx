@@ -1,15 +1,32 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import helmet from '/imgOfSite/helmet.png'
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import Cookies from 'js-cookie';
+
+
 export default function Header(){
+    
+    const history = useNavigate();
+
+
     const [arg, func]= useState(false);
     const [isBurgClick, chBurgState] = useState(false);
     function ChangeOverflow(){
         !isBurgClick?document.body.style.overflow = "hidden":document.body.style.overflow = "visible";
     }
-    let isLogin = false;
+    let cookie = undefined;
+    useEffect(()=>{
+        
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${"session_id"}=`);
+        if (parts.length === 2) cookie = parts.pop().split(';').shift();
+        if(cookie === undefined){
+            history('/auth');
+        }
+
+    })
     return(
-        <header className={isBurgClick?'active':null}>
+        <header className={isBurgClick?'active':null} >
             <div className="headerConteiner">
                 <div>
 
@@ -40,14 +57,13 @@ export default function Header(){
                             <li><Link to="/">Дім</Link></li>
                             <li><Link to="/chats">Чати</Link></li>
                             <li><Link to="/forma">Допомоги!</Link></li>
-                        
-                            <li><div className='account' >{isLogin?
+
+                            <li><div className='account' >{cookie === undefined?
                             
                                 <img src={helmet} alt="profile" className='imgOfYourProfile' />
                             :
                             <>
-                                <Link className='log_in' to='/auth'>Увійти</Link>
-                                <Link className='sign_in' to='/auth'>Зереєструватись</Link>
+                                <Link className='log_in' to='/auth'>Авторизуватися</Link>
                             </>
                             }
                             </div></li>
@@ -56,6 +72,8 @@ export default function Header(){
                 </div>
                 
             </div>
+            
         </header>
+        
     )
 }
