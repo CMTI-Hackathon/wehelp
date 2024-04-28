@@ -24,6 +24,8 @@ const _ = grpc.SupportPackageIsVersion7
 type SplitterAuthClient interface {
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*AuthResponse, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*AuthResponse, error)
+	ConfirmSession(ctx context.Context, in *User, opts ...grpc.CallOption) (*ConfirmResult, error)
+	GetUserById(ctx context.Context, in *User, opts ...grpc.CallOption) (*User, error)
 }
 
 type splitterAuthClient struct {
@@ -52,12 +54,32 @@ func (c *splitterAuthClient) Login(ctx context.Context, in *LoginRequest, opts .
 	return out, nil
 }
 
+func (c *splitterAuthClient) ConfirmSession(ctx context.Context, in *User, opts ...grpc.CallOption) (*ConfirmResult, error) {
+	out := new(ConfirmResult)
+	err := c.cc.Invoke(ctx, "/splitterAuth/confirmSession", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *splitterAuthClient) GetUserById(ctx context.Context, in *User, opts ...grpc.CallOption) (*User, error) {
+	out := new(User)
+	err := c.cc.Invoke(ctx, "/splitterAuth/getUserById", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SplitterAuthServer is the server API for SplitterAuth service.
 // All implementations must embed UnimplementedSplitterAuthServer
 // for forward compatibility
 type SplitterAuthServer interface {
 	Register(context.Context, *RegisterRequest) (*AuthResponse, error)
 	Login(context.Context, *LoginRequest) (*AuthResponse, error)
+	ConfirmSession(context.Context, *User) (*ConfirmResult, error)
+	GetUserById(context.Context, *User) (*User, error)
 	mustEmbedUnimplementedSplitterAuthServer()
 }
 
@@ -70,6 +92,12 @@ func (UnimplementedSplitterAuthServer) Register(context.Context, *RegisterReques
 }
 func (UnimplementedSplitterAuthServer) Login(context.Context, *LoginRequest) (*AuthResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+}
+func (UnimplementedSplitterAuthServer) ConfirmSession(context.Context, *User) (*ConfirmResult, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ConfirmSession not implemented")
+}
+func (UnimplementedSplitterAuthServer) GetUserById(context.Context, *User) (*User, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserById not implemented")
 }
 func (UnimplementedSplitterAuthServer) mustEmbedUnimplementedSplitterAuthServer() {}
 
@@ -120,6 +148,42 @@ func _SplitterAuth_Login_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SplitterAuth_ConfirmSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(User)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SplitterAuthServer).ConfirmSession(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/splitterAuth/confirmSession",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SplitterAuthServer).ConfirmSession(ctx, req.(*User))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SplitterAuth_GetUserById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(User)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SplitterAuthServer).GetUserById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/splitterAuth/getUserById",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SplitterAuthServer).GetUserById(ctx, req.(*User))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SplitterAuth_ServiceDesc is the grpc.ServiceDesc for SplitterAuth service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -134,6 +198,172 @@ var SplitterAuth_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "login",
 			Handler:    _SplitterAuth_Login_Handler,
+		},
+		{
+			MethodName: "confirmSession",
+			Handler:    _SplitterAuth_ConfirmSession_Handler,
+		},
+		{
+			MethodName: "getUserById",
+			Handler:    _SplitterAuth_GetUserById_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "splitter.proto",
+}
+
+// SplitterChatClient is the client API for SplitterChat service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type SplitterChatClient interface {
+	GetChats(ctx context.Context, in *User, opts ...grpc.CallOption) (*Chats, error)
+	GetChat(ctx context.Context, in *Chat, opts ...grpc.CallOption) (*Chat, error)
+	SendMessage(ctx context.Context, in *Msg, opts ...grpc.CallOption) (*State, error)
+}
+
+type splitterChatClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewSplitterChatClient(cc grpc.ClientConnInterface) SplitterChatClient {
+	return &splitterChatClient{cc}
+}
+
+func (c *splitterChatClient) GetChats(ctx context.Context, in *User, opts ...grpc.CallOption) (*Chats, error) {
+	out := new(Chats)
+	err := c.cc.Invoke(ctx, "/splitterChat/getChats", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *splitterChatClient) GetChat(ctx context.Context, in *Chat, opts ...grpc.CallOption) (*Chat, error) {
+	out := new(Chat)
+	err := c.cc.Invoke(ctx, "/splitterChat/getChat", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *splitterChatClient) SendMessage(ctx context.Context, in *Msg, opts ...grpc.CallOption) (*State, error) {
+	out := new(State)
+	err := c.cc.Invoke(ctx, "/splitterChat/sendMessage", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// SplitterChatServer is the server API for SplitterChat service.
+// All implementations must embed UnimplementedSplitterChatServer
+// for forward compatibility
+type SplitterChatServer interface {
+	GetChats(context.Context, *User) (*Chats, error)
+	GetChat(context.Context, *Chat) (*Chat, error)
+	SendMessage(context.Context, *Msg) (*State, error)
+	mustEmbedUnimplementedSplitterChatServer()
+}
+
+// UnimplementedSplitterChatServer must be embedded to have forward compatible implementations.
+type UnimplementedSplitterChatServer struct {
+}
+
+func (UnimplementedSplitterChatServer) GetChats(context.Context, *User) (*Chats, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetChats not implemented")
+}
+func (UnimplementedSplitterChatServer) GetChat(context.Context, *Chat) (*Chat, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetChat not implemented")
+}
+func (UnimplementedSplitterChatServer) SendMessage(context.Context, *Msg) (*State, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendMessage not implemented")
+}
+func (UnimplementedSplitterChatServer) mustEmbedUnimplementedSplitterChatServer() {}
+
+// UnsafeSplitterChatServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to SplitterChatServer will
+// result in compilation errors.
+type UnsafeSplitterChatServer interface {
+	mustEmbedUnimplementedSplitterChatServer()
+}
+
+func RegisterSplitterChatServer(s grpc.ServiceRegistrar, srv SplitterChatServer) {
+	s.RegisterService(&SplitterChat_ServiceDesc, srv)
+}
+
+func _SplitterChat_GetChats_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(User)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SplitterChatServer).GetChats(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/splitterChat/getChats",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SplitterChatServer).GetChats(ctx, req.(*User))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SplitterChat_GetChat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Chat)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SplitterChatServer).GetChat(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/splitterChat/getChat",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SplitterChatServer).GetChat(ctx, req.(*Chat))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SplitterChat_SendMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Msg)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SplitterChatServer).SendMessage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/splitterChat/sendMessage",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SplitterChatServer).SendMessage(ctx, req.(*Msg))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// SplitterChat_ServiceDesc is the grpc.ServiceDesc for SplitterChat service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var SplitterChat_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "splitterChat",
+	HandlerType: (*SplitterChatServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "getChats",
+			Handler:    _SplitterChat_GetChats_Handler,
+		},
+		{
+			MethodName: "getChat",
+			Handler:    _SplitterChat_GetChat_Handler,
+		},
+		{
+			MethodName: "sendMessage",
+			Handler:    _SplitterChat_SendMessage_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
