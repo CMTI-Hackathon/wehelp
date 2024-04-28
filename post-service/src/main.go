@@ -48,6 +48,11 @@ func (s *server) CreatePost(ctx context.Context, request *pb.Post) (*pb.Result, 
 	result.Id = strconv.Itoa(int(postid))
 	return &result, nil
 }
+func (s *server) GetPost(context.Context, *pb.Post) (*pb.Post, error) {
+	var result pb.Post
+
+	return &result, nil
+}
 
 func main() {
 	db, err := sql.Open("mysql", cfg.FormatDSN())

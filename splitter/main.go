@@ -260,13 +260,65 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Write(answer)
+}
+
+func getLastPosts(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		w.Write([]byte("{}"))
+		return
+	}
+	conn, err := grpc.Dial("post-service:4012", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		w.Write([]byte("{}"))
+		println(err.Error())
+	}
+	client := pb.NewPostServiceClient(conn)
+	client.GetNewPosts(context.Background(), &pb.Empty{})
+	//add response
+}
+func getPost(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "GET" {
+		w.Write([]byte("{}"))
+		return
+	}
+
+	println("new getUserById request", r.URL.Path)
+	vals, err := url.ParseQuery(r.URL.RawQuery)
+	if err != nil {
+		w.Write([]byte("{}"))
+		return
+	}
+	conn, err := grpc.Dial("auth-service:4011", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		println("error:", err.Error())
+		w.Write([]byte("{}"))
+		return
+	}
+	client := pb.NewPostServiceClient(conn)
+	response, err := client.GetPost(context.Background(), &pb.Post{PostId: vals.Get("id")})
+	if err != nil {
+		println("error:", err.Error())
+		w.Write([]byte("{}"))
+		return
+	}
+	answer, err := protojson.Marshal(response)
+
+	if err != nil {
+		println(err.Error())
+		w.Write([]byte("{}"))
+		return
+	}
+	w.Write(answer)
 
 }
+
 func main() {
 	http.HandleFunc("/api/registerUser", registerUser)
 	http.HandleFunc("/api/login", loginUser)
 	http.HandleFunc("/api/getUserById", getUserById)
 	http.HandleFunc("/api/createPost", createPost)
+	http.HandleFunc("/api/getPosts", getLastPosts)
+	http.HandleFunc("/api/getPost", getLastPosts)
 
 	log.Fatal(http.ListenAndServe(":4010", nil))
 

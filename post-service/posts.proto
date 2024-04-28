@@ -20,4 +20,5 @@ message post{
     string header = 2;
     string text = 3;
     string type = 4;
+    string postId = 5;
 }
