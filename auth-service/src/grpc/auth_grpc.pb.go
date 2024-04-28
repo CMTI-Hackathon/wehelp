@@ -24,7 +24,8 @@ const _ = grpc.SupportPackageIsVersion7
 type SplitterAuthClient interface {
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*AuthResponse, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*AuthResponse, error)
-	GetUsernameById(ctx context.Context, in *User, opts ...grpc.CallOption) (*Username, error)
+	ConfirmSession(ctx context.Context, in *User, opts ...grpc.CallOption) (*ConfirmResult, error)
+	GetUserById(ctx context.Context, in *User, opts ...grpc.CallOption) (*User, error)
 }
 
 type splitterAuthClient struct {
@@ -53,9 +54,18 @@ func (c *splitterAuthClient) Login(ctx context.Context, in *LoginRequest, opts .
 	return out, nil
 }
 
-func (c *splitterAuthClient) GetUsernameById(ctx context.Context, in *User, opts ...grpc.CallOption) (*Username, error) {
-	out := new(Username)
-	err := c.cc.Invoke(ctx, "/splitterAuth/getUsernameById", in, out, opts...)
+func (c *splitterAuthClient) ConfirmSession(ctx context.Context, in *User, opts ...grpc.CallOption) (*ConfirmResult, error) {
+	out := new(ConfirmResult)
+	err := c.cc.Invoke(ctx, "/splitterAuth/confirmSession", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *splitterAuthClient) GetUserById(ctx context.Context, in *User, opts ...grpc.CallOption) (*User, error) {
+	out := new(User)
+	err := c.cc.Invoke(ctx, "/splitterAuth/getUserById", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +78,8 @@ func (c *splitterAuthClient) GetUsernameById(ctx context.Context, in *User, opts
 type SplitterAuthServer interface {
 	Register(context.Context, *RegisterRequest) (*AuthResponse, error)
 	Login(context.Context, *LoginRequest) (*AuthResponse, error)
-	GetUsernameById(context.Context, *User) (*Username, error)
+	ConfirmSession(context.Context, *User) (*ConfirmResult, error)
+	GetUserById(context.Context, *User) (*User, error)
 	mustEmbedUnimplementedSplitterAuthServer()
 }
 
@@ -82,8 +93,11 @@ func (UnimplementedSplitterAuthServer) Register(context.Context, *RegisterReques
 func (UnimplementedSplitterAuthServer) Login(context.Context, *LoginRequest) (*AuthResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
-func (UnimplementedSplitterAuthServer) GetUsernameById(context.Context, *User) (*Username, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUsernameById not implemented")
+func (UnimplementedSplitterAuthServer) ConfirmSession(context.Context, *User) (*ConfirmResult, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ConfirmSession not implemented")
+}
+func (UnimplementedSplitterAuthServer) GetUserById(context.Context, *User) (*User, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserById not implemented")
 }
 func (UnimplementedSplitterAuthServer) mustEmbedUnimplementedSplitterAuthServer() {}
 
@@ -134,20 +148,38 @@ func _SplitterAuth_Login_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SplitterAuth_GetUsernameById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _SplitterAuth_ConfirmSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(User)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SplitterAuthServer).GetUsernameById(ctx, in)
+		return srv.(SplitterAuthServer).ConfirmSession(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/splitterAuth/getUsernameById",
+		FullMethod: "/splitterAuth/confirmSession",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SplitterAuthServer).GetUsernameById(ctx, req.(*User))
+		return srv.(SplitterAuthServer).ConfirmSession(ctx, req.(*User))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SplitterAuth_GetUserById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(User)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SplitterAuthServer).GetUserById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/splitterAuth/getUserById",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SplitterAuthServer).GetUserById(ctx, req.(*User))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -168,8 +200,12 @@ var SplitterAuth_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _SplitterAuth_Login_Handler,
 		},
 		{
-			MethodName: "getUsernameById",
-			Handler:    _SplitterAuth_GetUsernameById_Handler,
+			MethodName: "confirmSession",
+			Handler:    _SplitterAuth_ConfirmSession_Handler,
+		},
+		{
+			MethodName: "getUserById",
+			Handler:    _SplitterAuth_GetUserById_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

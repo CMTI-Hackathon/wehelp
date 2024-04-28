@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"net/http/httputil"
+	"net/url"
 	pb "wehelp_goservice/grpc"
 
 	"google.golang.org/grpc"
@@ -22,6 +23,22 @@ type loginData struct {
 	Email, Password string
 }
 
+func confirmSession(userId string, sessionId string) bool {
+	conn, err := grpc.Dial("auth-service:4011", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		println("error:", err.Error())
+
+		return false
+	}
+	client := pb.NewSplitterAuthClient(conn)
+	res, err := client.ConfirmSession(context.Background(), &pb.User{UserId: userId, SessionId: sessionId})
+	if err != nil {
+		println("error:", err.Error())
+
+		return false
+	}
+	return res.Result
+}
 func loginUser(w http.ResponseWriter, r *http.Request) {
 	println("New login request")
 	res, err := httputil.DumpRequest(r, true)
@@ -74,7 +91,7 @@ func loginUser(w http.ResponseWriter, r *http.Request) {
 		Value:    response.SessionId,
 		Path:     "/",
 		MaxAge:   600,
-		HttpOnly: true,
+		HttpOnly: false,
 		Secure:   true,
 		SameSite: http.SameSiteLaxMode,
 	}
@@ -136,7 +153,7 @@ func registerUser(w http.ResponseWriter, r *http.Request) {
 		Value:    response.SessionId,
 		Path:     "/",
 		MaxAge:   600,
-		HttpOnly: true,
+		HttpOnly: false,
 		Secure:   true,
 		SameSite: http.SameSiteLaxMode,
 	}
@@ -144,9 +161,46 @@ func registerUser(w http.ResponseWriter, r *http.Request) {
 	w.Write(answer)
 
 }
+
+func getUserById(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "GET" {
+		w.Write([]byte("{}"))
+		return
+	}
+
+	println("new getUserById request", r.URL.Path)
+	vals, err := url.ParseQuery(r.URL.RawQuery)
+	if err != nil {
+		w.Write([]byte("{}"))
+		return
+	}
+	conn, err := grpc.Dial("auth-service:4011", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		println("error:", err.Error())
+		w.Write([]byte("{}"))
+		return
+	}
+	client := pb.NewSplitterAuthClient(conn)
+	response, err := client.GetUserById(context.Background(), &pb.User{UserId: vals.Get("id")})
+	if err != nil {
+		println("error:", err.Error())
+		w.Write([]byte("{}"))
+		return
+	}
+	answer, err := protojson.Marshal(response)
+
+	if err != nil {
+		println(err.Error())
+		w.Write([]byte("{}"))
+		return
+	}
+	w.Write(answer)
+
+}
 func main() {
 	http.HandleFunc("/api/registerUser", registerUser)
 	http.HandleFunc("/api/login", loginUser)
+	http.HandleFunc("/api/getUserById", getUserById)
 
 	log.Fatal(http.ListenAndServe(":4010", nil))
 

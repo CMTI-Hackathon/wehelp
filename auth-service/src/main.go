@@ -1,5 +1,8 @@
 package main
 
+/*
+	To do: add crypting to database data for password, userid, session_id
+*/
 import (
 	"context"
 	"database/sql"
@@ -23,13 +26,6 @@ var cfg = mysql.Config{
 	AllowNativePasswords: true,
 }
 
-type USER struct {
-	Id       int
-	Name     string
-	Email    string
-	Password string
-	isHelper []uint8
-}
 type server struct {
 	pb.SplitterAuthServer
 }
@@ -77,6 +73,32 @@ func generateSession(userId int) string {
 	return strconv.Itoa(int(session_id))
 
 }
+func (s *server) ConfirmSession(ctx context.Context, request *pb.User) (*pb.ConfirmResult, error) {
+	result := pb.ConfirmResult{
+		Result: false,
+	}
+	db, err := sql.Open("mysql", cfg.FormatDSN())
+	if err != nil {
+		println("Error to connect to database")
+		return &result, nil
+	}
+	defer db.Close()
+	userId, err := strconv.Atoi(request.UserId)
+	if err != nil {
+		println("Error in user id")
+		return &result, nil
+	}
+	rows := db.QueryRow("SELECT session_id FROM user_sessions WHERE id = ?", userId)
+	err = rows.Scan(&userId)
+	if err != nil {
+		println(err.Error())
+		return &result, nil
+	}
+	if (request.SessionId == strconv.Itoa(userId)) && userId > 0 {
+		result.Result = true
+	}
+	return &result, nil
+}
 
 func (s *server) Register(ctx context.Context, request *pb.RegisterRequest) (*pb.AuthResponse, error) {
 	defer deleteOldSessions()
@@ -103,7 +125,6 @@ func (s *server) Register(ctx context.Context, request *pb.RegisterRequest) (*pb
 		return response, nil
 	}
 
-	//var user USER
 	id, err := res.LastInsertId()
 	if err != nil {
 		response.UserId = ""
@@ -147,7 +168,39 @@ func (s *server) Login(ctx context.Context, request *pb.LoginRequest) (*pb.AuthR
 	response.SessionId = generateSession(userId)
 	return &response, nil
 }
-
+func (s *server) GetUserById(ctx context.Context, request *pb.User) (*pb.User, error) {
+	db, err := sql.Open("mysql", cfg.FormatDSN())
+	println("new getuserbyid reqiest")
+	result := pb.User{
+		Username:  "",
+		UserId:    "",
+		SessionId: "",
+		IsHelper:  false,
+	}
+	if err != nil {
+		return &result, nil
+	}
+	defer db.Close()
+	userId, err := strconv.Atoi(request.UserId)
+	if err != nil {
+		println(err.Error())
+		return &result, nil
+	}
+	row := db.QueryRow("SELECT name, isHelper FROM usersdb.users WHERE id=?", userId)
+	var isHelper int
+	err = row.Scan(&result.Username, &isHelper)
+	println("is helper", isHelper)
+	if isHelper == 0 {
+		result.IsHelper = false
+	} else {
+		result.IsHelper = true
+	}
+	if err != nil {
+		println(err.Error())
+		return &pb.User{}, nil
+	}
+	return &result, nil
+}
 func main() {
 
 	db, err := sql.Open("mysql", cfg.FormatDSN())
