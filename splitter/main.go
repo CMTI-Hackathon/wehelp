@@ -91,7 +91,7 @@ func loginUser(w http.ResponseWriter, r *http.Request) {
 		Value:    response.SessionId,
 		Path:     "/",
 		MaxAge:   600,
-		HttpOnly: true,
+		HttpOnly: false,
 		Secure:   true,
 		SameSite: http.SameSiteLaxMode,
 	}
@@ -153,7 +153,7 @@ func registerUser(w http.ResponseWriter, r *http.Request) {
 		Value:    response.SessionId,
 		Path:     "/",
 		MaxAge:   600,
-		HttpOnly: true,
+		HttpOnly: false,
 		Secure:   true,
 		SameSite: http.SameSiteLaxMode,
 	}
