@@ -5,12 +5,21 @@ option go_package="wehelp_goservice/grpc";
 service splitterAuth{
     rpc register(registerRequest)  returns (authResponse) {};
     rpc login(loginRequest) returns (authResponse){};
+    rpc getUsernameById(user) returns (username){};
 }
 message registerRequest{
     string name = 1;
     string password = 2;
     string email = 3;
     bool isHelper = 4;
+}
+message username{
+    string username = 1;
+}
+message user{
+    string userId = 1;
+    string username = 2;
+    string session_id = 3;
 }
 
 message authResponse{

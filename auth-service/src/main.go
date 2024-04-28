@@ -23,7 +23,6 @@ var cfg = mysql.Config{
 	AllowNativePasswords: true,
 }
 
-type BitBool bool
 type USER struct {
 	Id       int
 	Name     string
@@ -41,7 +40,7 @@ func deleteOldSessions() {
 		log.Fatal(err)
 	}
 	defer db.Close()
-	res, err := db.Exec("DELETE FROM user_sessions WHERE creationDate < (NOW() - INTERVAL 1 MINUTE)")
+	res, err := db.Exec("DELETE FROM user_sessions WHERE creationDate < (NOW() - INTERVAL 10 MINUTE)")
 	if err != nil {
 		println(res, err.Error())
 	}
@@ -81,7 +80,13 @@ func generateSession(userId int) string {
 func (s *server) Register(ctx context.Context, request *pb.RegisterRequest) (*pb.AuthResponse, error) {
 	defer deleteOldSessions()
 
-	println("Register request:", request.Email, request.Name, request.Password, request.IsHelper)
+	var isHelper int
+	if request.IsHelper {
+		isHelper = 1
+	} else {
+		isHelper = 0
+	}
+	println("Register request:", request.Email, request.Name, request.Password, isHelper)
 	var response *pb.AuthResponse = &pb.AuthResponse{}
 	db, err := sql.Open("mysql", cfg.FormatDSN())
 	if err != nil {
@@ -89,7 +94,7 @@ func (s *server) Register(ctx context.Context, request *pb.RegisterRequest) (*pb
 	}
 	defer db.Close()
 
-	res, err := db.Exec("INSERT INTO users ( name, email, password, isHelper) VALUES ( ?, ?, ?, ? )", request.Name, request.Email, request.Password, request.IsHelper)
+	res, err := db.Exec("INSERT INTO users ( name, email, password, isHelper) VALUES ( ?, ?, ?, ? )", request.Name, request.Email, request.Password, isHelper)
 	if err != nil {
 		response.UserId = ""
 		response.Success = false
@@ -120,14 +125,6 @@ func main() {
 		return
 	}
 	defer db.Close()
-
-	println("connected to db")
-	//res, err := db.Exec("INSERT INTO users ( name, email, password, isHelper) VALUES ('Someone', 'noone@email.com', 'qwerty', 1 )")
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
-	//println(res)
 
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 4011))
 	if err != nil {

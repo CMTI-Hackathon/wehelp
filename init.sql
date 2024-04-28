@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS users (
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    isHelper BIT 
+    isHelper INT 
 ) AUTO_INCREMENT=1;
 CREATE TABLE IF NOT EXISTS user_sessions (
     id INT UNIQUE,

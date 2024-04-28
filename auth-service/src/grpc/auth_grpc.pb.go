@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type SplitterAuthClient interface {
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*AuthResponse, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*AuthResponse, error)
+	GetUsernameById(ctx context.Context, in *User, opts ...grpc.CallOption) (*Username, error)
 }
 
 type splitterAuthClient struct {
@@ -52,12 +53,22 @@ func (c *splitterAuthClient) Login(ctx context.Context, in *LoginRequest, opts .
 	return out, nil
 }
 
+func (c *splitterAuthClient) GetUsernameById(ctx context.Context, in *User, opts ...grpc.CallOption) (*Username, error) {
+	out := new(Username)
+	err := c.cc.Invoke(ctx, "/splitterAuth/getUsernameById", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SplitterAuthServer is the server API for SplitterAuth service.
 // All implementations must embed UnimplementedSplitterAuthServer
 // for forward compatibility
 type SplitterAuthServer interface {
 	Register(context.Context, *RegisterRequest) (*AuthResponse, error)
 	Login(context.Context, *LoginRequest) (*AuthResponse, error)
+	GetUsernameById(context.Context, *User) (*Username, error)
 	mustEmbedUnimplementedSplitterAuthServer()
 }
 
@@ -70,6 +81,9 @@ func (UnimplementedSplitterAuthServer) Register(context.Context, *RegisterReques
 }
 func (UnimplementedSplitterAuthServer) Login(context.Context, *LoginRequest) (*AuthResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+}
+func (UnimplementedSplitterAuthServer) GetUsernameById(context.Context, *User) (*Username, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUsernameById not implemented")
 }
 func (UnimplementedSplitterAuthServer) mustEmbedUnimplementedSplitterAuthServer() {}
 
@@ -120,6 +134,24 @@ func _SplitterAuth_Login_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SplitterAuth_GetUsernameById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(User)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SplitterAuthServer).GetUsernameById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/splitterAuth/getUsernameById",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SplitterAuthServer).GetUsernameById(ctx, req.(*User))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SplitterAuth_ServiceDesc is the grpc.ServiceDesc for SplitterAuth service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -134,6 +166,10 @@ var SplitterAuth_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "login",
 			Handler:    _SplitterAuth_Login_Handler,
+		},
+		{
+			MethodName: "getUsernameById",
+			Handler:    _SplitterAuth_GetUsernameById_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
