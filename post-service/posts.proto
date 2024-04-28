@@ -1,0 +1,23 @@
+syntax="proto3";
+option go_package="wehelp_goservice/grpc";
+service postService{
+    rpc createPost(post) returns (result){};
+    rpc getNewPosts(empty) returns (posts){};
+    rpc getPost(post) returns (post){}; 
+};
+
+message result{
+    string id = 1;
+}
+message empty{
+
+}
+message posts{
+    repeated post post_array = 1;
+}
+message post{
+    string userId = 1;
+    string header = 2;
+    string text = 3;
+    string type = 4;
+}
