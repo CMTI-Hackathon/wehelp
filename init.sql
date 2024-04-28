@@ -11,4 +11,13 @@ CREATE TABLE IF NOT EXISTS user_sessions (
     id INT UNIQUE,
     creationDate DATETIME,
     session_id INT UNIQUE AUTO_INCREMENT
-)
+);
+CREATE TABLE IF NOT EXISTS posts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    userId INT,
+    creationDate DATETIME,
+    header VARCHAR(255),
+    text VARCHAR(1024),
+    type VARCHAR(16)
+   
+);

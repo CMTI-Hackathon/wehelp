@@ -9,7 +9,8 @@ services:
   mariadb-database:
     
     image: mariadb
-
+    ports:
+      - '3306:3306'
     restart: always
     environment:
       MARIADB_ROOT_PASSWORD: example_password
@@ -17,29 +18,16 @@ services:
       MARIDB_PASSWORD : example_password
     volumes:
        - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-  mongo:
-    image: mongo
-    restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
-
-  mongo-express:
-    image: mongo-express
-    restart: always
-    ports:
-      - 8081:8081
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: example
-      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
-      ME_CONFIG_BASICAUTH: false
+  post-service:
+    build:
+      context: ./post-service
+      dockerfile: ./Dockerfile
+    restart: on-failure
+    
   splitter:
     build:
       context: ./splitter
       dockerfile: ./Dockerfile
-    ports: 
-      - '3035:3035'
   auth-service:
     restart: on-failure
     depends_on:
