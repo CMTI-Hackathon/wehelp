@@ -63,6 +63,16 @@ func registerUser(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("{\"succes\" : false}"))
 		return
 	}
+	cookie := http.Cookie{
+		Name:     "session_id",
+		Value:    response.SessionId,
+		Path:     "/",
+		MaxAge:   600,
+		HttpOnly: true,
+		Secure:   true,
+		SameSite: http.SameSiteLaxMode,
+	}
+	http.SetCookie(w, &cookie)
 	w.Write(answer)
 
 }
