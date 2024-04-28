@@ -46,6 +46,7 @@ func deleteOldSessions() {
 	}
 
 }
+
 func generateSession(userId int) string {
 	db, err := sql.Open("mysql", cfg.FormatDSN())
 	if err != nil {
@@ -116,6 +117,37 @@ func (s *server) Register(ctx context.Context, request *pb.RegisterRequest) (*pb
 	response.SessionId = generateSession(int(id))
 	return response, nil
 }
+func (s *server) Login(ctx context.Context, request *pb.LoginRequest) (*pb.AuthResponse, error) {
+	println("login request", request.Email, request.Password)
+	var response pb.AuthResponse
+	db, err := sql.Open("mysql", cfg.FormatDSN())
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+	defer deleteOldSessions()
+	row := db.QueryRow("SELECT id FROM usersdb.users WHERE email=? AND password=?", request.Email, request.Password)
+	if row.Err() != nil {
+		println(row.Err().Error())
+		response.Success = false
+		response.SessionId = ""
+		response.UserId = ""
+		return &response, nil
+	}
+	var userId int
+	row.Scan(&userId)
+	if userId == 0 {
+		response.Success = false
+		response.SessionId = ""
+		response.UserId = ""
+		return &response, nil
+	}
+	response.UserId = strconv.Itoa(userId)
+	response.Success = true
+	response.SessionId = generateSession(userId)
+	return &response, nil
+}
+
 func main() {
 
 	db, err := sql.Open("mysql", cfg.FormatDSN())
