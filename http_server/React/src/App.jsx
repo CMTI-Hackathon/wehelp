@@ -2,6 +2,7 @@ import FormPage from './pages/FormPage';
 import HomePage from './pages/HomePage';
 import Auth from './pages/Auth';
 import Chat from './pages/Chat';
+import PostPage from './pages/PostPage';
 import ChatsMenegerPage from './pages/ChatsMenegerPage';
 import {
   BrowserRouter,
@@ -21,6 +22,7 @@ function App() {
         <Route path='/chats' element = {<ChatsMenegerPage/>}/>
         <Route path='/auth' element = {<Auth/>}/>
         <Route path='/chat/:id' element = {<Chat/>}/>
+        <Route path='/post' element= {<PostPage/>}/>
       </Routes>
     </HashRouter>
     

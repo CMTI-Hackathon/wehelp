@@ -5,8 +5,16 @@ import '../components/styles/pages/Chat/chat.css'
 import React, { useState,useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
-const sessionId = "1"; // temporary
+function getSessionId(){
+	
+	let sessionId = undefined;
+	const value = `; ${document.cookie}`;
+	const parts = value.split(`; ${"session_id"}=`);
+	if (parts.length === 2) sessionId = parts.pop().split(';').shift();
+	return sessionId;
+}
 
+const sessionId = getSessionId();
 
 async function sendMessage(){
 	// await checkMessage();

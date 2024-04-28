@@ -1,14 +1,16 @@
 import '../components/styles/pages/Auth/auth.css'
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from "react-router-dom"
-import Cookies from 'js-cookie';
 
-
+function changeLocation(){
+	location.reload();
+}
 
 async function loginSend(e) {
 	e.preventDefault();
 	const email = document.getElementById("email").value;
 	const password = document.getElementById("password").value;
+	
 	const response = await fetch('/api/login', {
 		method: 'POST',
 		headers: {
@@ -28,8 +30,10 @@ async function loginSend(e) {
 
 	console.log(response.success)
 	if(response.success === true){
-		window.location.pathname = '/';
+		changeLocation();
+		return true;
 	}else{
+
 		return false;
 	}
 }
@@ -40,7 +44,7 @@ function loginForm() {
 			<form onSubmit={loginSend} className='auth-form' id='loginform'>
 				<h2>Увійдіть у свій аккаунт</h2>
 
-				<input type="text" id='email' placeholder="Електронна пошта"  required />
+				<input type="email" id='email' placeholder="Електронна пошта"  required />
 				<input type="password" id='password' placeholder="Пароль"  required />
 				<button type="submit" id='submit'>Вхід</button>
 			</form>
@@ -50,8 +54,6 @@ function loginForm() {
 
 async function registerSend(e) {
 	e.preventDefault();
-
-
 	const password = document.getElementById("password").value;
 	if (!(password === document.getElementById("cPassword").value)) { return false };
 
@@ -79,13 +81,15 @@ async function registerSend(e) {
 
 	
 	if(response.success === true){
-		window.location.pathname = '/';
+		changeLocation();
+		return true;
 	}else{
 		return false;
 	}
 }
 
 function registerForm() {
+
 
 	return (
 		<div className='authBody'>
@@ -94,8 +98,8 @@ function registerForm() {
 				<input type="text" id='name' placeholder="Ім'я" required />
 				<input type="email" id='email' placeholder="Електронна пошта"  required />
 				<input type="password" id='password' placeholder="Пароль" 
-					pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" title='Password must consist of least 8 characters and contain 
-			 at least one uppercase letter, one lowercase letter and a number' required />
+					pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" title='Пароль повинен складатися не менше ніж з 8 символів і містити
+				принаймні одну велику літеру, одну малу літеру та цифру' required />
 				<input type="password" id='cPassword' placeholder="Підтвердження паролю" 
 					pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" required />
 
@@ -114,7 +118,6 @@ function registerForm() {
 
 
 				<button type="submit" id='submit'>Реєстрація</button>
-				<li><Link to={"/chats"}>Go to chats temporary</Link></li> {/* tmp */}
 			</form>
 
 		</div>
@@ -122,7 +125,7 @@ function registerForm() {
 }
 
 export default function Auth() {
-	const history = useNavigate();
+const history = useNavigate();
 	
 	useEffect(()=>{
 		let cookie = undefined;

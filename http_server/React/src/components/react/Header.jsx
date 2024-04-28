@@ -1,13 +1,42 @@
 import {useEffect, useState} from 'react'
 import helmet from '/imgOfSite/helmet.png'
 import {Link, useNavigate} from "react-router-dom";
-import Cookies from 'js-cookie';
+
+async function CheckUser(id){
+	await fetch(`/api/getUserById?id=${id}`, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	})
+	.then(res =>{
+		if(!res.ok){
+			throw new Error(`HTTP error ${res.status}`);
+		}
+		return res.json();
+	})
+	.then(json =>{
+        console.log(json);
+		if(json.isHelper == true){
+			return true;
+		}
+	})
+	.catch((error) => console.error("Error:",error));
+
+	return false;
+}
 
 
 export default function Header(){
     
     const history = useNavigate();
 
+    let id = undefined;
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${"user_id"}=`);
+    if (parts.length === 2) id = parts.pop().split(';').shift();
+
+    const isHelper = CheckUser(id);
 
     const [arg, func]= useState(false);
     const [isBurgClick, chBurgState] = useState(false);
@@ -54,9 +83,15 @@ export default function Header(){
                     </div>
                     <nav className={isBurgClick?'navigation active':'navigation'}>
                         <ul>
-                            <li><Link to="/">Дім</Link></li>
+                            
                             <li><Link to="/chats">Чати</Link></li>
-                            <li><Link to="/forma">Допомоги!</Link></li>
+                            {isHelper ? 
+                                <li><Link to="/">Дім</Link></li>
+                            :
+                                <li><Link to="/forma">Допомоги!</Link></li>
+                            }
+                            
+                            
 
                             <li><div className='account' >{cookie === undefined?
                             
