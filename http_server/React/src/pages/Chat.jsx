@@ -45,7 +45,7 @@ async function checkMessage(){
 
 async function fetchMessages(){
 	const messagesUrl = "http://localhost:3000/messages"
-	const response = await fetch(messagesUrl);
+	const response = await fetch(messagesUrl,);
 	return response.json();
 }
 

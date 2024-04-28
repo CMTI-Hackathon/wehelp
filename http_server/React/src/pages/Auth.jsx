@@ -4,8 +4,8 @@ import { Link } from "react-router-dom"
 
 async function loginSend(e) {
 	e.preventDefault();
-	const email = document.getElementById("email");
-	const password = document.getElementById("password");
+	const email = document.getElementById("email").value;
+	const password = document.getElementById("password").value;
 	const response = await fetch('/api/login', {
 		method: 'POST',
 		headers: {
@@ -15,9 +15,17 @@ async function loginSend(e) {
 			email, password
 		})
 	})
+	.then(res =>{
+		if(!res.ok){
+			throw new Error(`HTTP error ${res.status}`);
+		}
+		return res.json();
+	})
+	.catch((error) => console.error("Error:",error));
 
-	if(response.json().valid == true){
-		<Link to="/chat/2"></Link>
+	console.log(response.success)
+	if(response.success === true){
+		window.location.pathname = '/';
 	}else{
 		return false;
 	}
