@@ -1,7 +1,8 @@
-FROM mongodb/mongo-cxx-driver
+FROM golang:1.22.2-alpine
+WORKDIR /usr/src/app
+COPY src/go.mod src/go.sum ./
+RUN go mod download && go mod verify
 
-WORKDIR /build
-RUN microdnf upgrade -y && microdnf install -y g++ cmake
-COPY src /build/
-RUN cmake build ./src CMAKE_RUNTIME_OUTPUT_DIRECTORY=./build
-CMD [ "./program" ]
+COPY ./src .
+RUN go build .
+CMD ["./wehelp_goservice"]

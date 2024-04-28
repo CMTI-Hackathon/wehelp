@@ -15,12 +15,15 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-type registerData struct {
+type RegisterData struct {
 	Username, Password, Email string
 	IsHelper                  bool
 }
-type loginData struct {
+type LoginData struct {
 	Email, Password string
+}
+type Post struct {
+	UserId, Text, Header, Type string
 }
 
 func confirmSession(userId string, sessionId string) bool {
@@ -56,7 +59,7 @@ func loginUser(w http.ResponseWriter, r *http.Request) {
 	}
 	client := pb.NewSplitterAuthClient(conn)
 
-	var jsonRequest loginData
+	var jsonRequest LoginData
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		w.Write([]byte("{\"success\" : false}"))
@@ -95,7 +98,16 @@ func loginUser(w http.ResponseWriter, r *http.Request) {
 		Secure:   true,
 		SameSite: http.SameSiteLaxMode,
 	}
+	cookie2 := http.Cookie{
+		Name:     "user_id",
+		Value:    response.UserId,
+		Path:     "/",
+		HttpOnly: false,
+		Secure:   true,
+		SameSite: http.SameSiteLaxMode,
+	}
 	http.SetCookie(w, &cookie)
+	http.SetCookie(w, &cookie2)
 	w.Write(answer)
 
 }
@@ -115,7 +127,7 @@ func registerUser(w http.ResponseWriter, r *http.Request) {
 		println("error:", err)
 	}
 	client := pb.NewSplitterAuthClient(conn)
-	var jsonRequest registerData
+	var jsonRequest RegisterData
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		w.Write([]byte("{\"success\" : false}"))
@@ -157,7 +169,16 @@ func registerUser(w http.ResponseWriter, r *http.Request) {
 		Secure:   true,
 		SameSite: http.SameSiteLaxMode,
 	}
+	cookie2 := http.Cookie{
+		Name:     "user_id",
+		Value:    response.UserId,
+		Path:     "/",
+		HttpOnly: false,
+		Secure:   true,
+		SameSite: http.SameSiteLaxMode,
+	}
 	http.SetCookie(w, &cookie)
+	http.SetCookie(w, &cookie2)
 	w.Write(answer)
 
 }
@@ -197,10 +218,55 @@ func getUserById(w http.ResponseWriter, r *http.Request) {
 	w.Write(answer)
 
 }
+func createPost(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		w.Write([]byte("{}"))
+		return
+	}
+	conn, err := grpc.Dial("post-service:4012", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		w.Write([]byte("{}"))
+		println(err.Error())
+	}
+	client := pb.NewPostServiceClient(conn)
+	var post Post
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		w.Write([]byte("{}"))
+		return
+	}
+	err = json.Unmarshal(body, &post)
+	if err != nil {
+		w.Write([]byte("{}"))
+		println(err.Error())
+		return
+	}
+	response, err := client.CreatePost(context.Background(), &pb.Post{
+		UserId: post.UserId,
+		Header: post.Header,
+		Text:   post.Text,
+		Type:   post.Type,
+	})
+	if err != nil {
+		w.Write([]byte("{}"))
+		println(err.Error())
+		return
+	}
+	answer, err := protojson.Marshal(response)
+
+	if err != nil {
+		println(err.Error())
+		w.Write([]byte("{}"))
+		return
+	}
+	w.Write(answer)
+
+}
 func main() {
 	http.HandleFunc("/api/registerUser", registerUser)
 	http.HandleFunc("/api/login", loginUser)
 	http.HandleFunc("/api/getUserById", getUserById)
+	http.HandleFunc("/api/createPost", createPost)
 
 	log.Fatal(http.ListenAndServe(":4010", nil))
 
