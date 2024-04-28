@@ -14,7 +14,7 @@ message registerRequest{
 }
 
 message authResponse{
-    bool succes = 1;
+    bool success = 1;
     string userId = 2;
     string sessionId = 3;
 }

@@ -73,6 +73,7 @@ func generateSession(userId int) string {
 	if err != nil {
 		log.Fatal("something went wrong")
 	}
+
 	return strconv.Itoa(int(session_id))
 
 }
@@ -91,7 +92,7 @@ func (s *server) Register(ctx context.Context, request *pb.RegisterRequest) (*pb
 	res, err := db.Exec("INSERT INTO users ( name, email, password, isHelper) VALUES ( ?, ?, ?, ? )", request.Name, request.Email, request.Password, request.IsHelper)
 	if err != nil {
 		response.UserId = ""
-		response.Succes = false
+		response.Success = false
 		response.SessionId = ""
 		return response, nil
 	}
@@ -100,11 +101,11 @@ func (s *server) Register(ctx context.Context, request *pb.RegisterRequest) (*pb
 	id, err := res.LastInsertId()
 	if err != nil {
 		response.UserId = ""
-		response.Succes = false
+		response.Success = false
 		response.SessionId = ""
 		return response, nil
 	}
-	response.Succes = true
+	response.Success = true
 	response.UserId = strconv.Itoa(int(id))
 	println("id :", response.UserId)
 	response.SessionId = generateSession(int(id))

@@ -38,12 +38,12 @@ func registerUser(w http.ResponseWriter, r *http.Request) {
 	var jsonRequest registerData
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
-		w.Write([]byte("{\"succes\" : false}"))
+		w.Write([]byte("{\"success\" : false}"))
 		return
 	}
 	err = json.Unmarshal(body, &jsonRequest)
 	if err != nil {
-		w.Write([]byte("{\"succes\" : false}"))
+		w.Write([]byte("{\"success\" : false}"))
 		println(err)
 		return
 	}
@@ -53,14 +53,19 @@ func registerUser(w http.ResponseWriter, r *http.Request) {
 	request.Password = jsonRequest.Password
 	request.IsHelper = jsonRequest.IsHelper
 	response, err := client.Register(context.Background(), &request)
+
 	if err != nil {
-		w.Write([]byte("{\"succes\" : false}"))
+		w.Write([]byte("{\"success\" : false}"))
 		println(err.Error())
+		return
+	}
+	if !response.Success {
+		w.Write([]byte("{\"success\" : false}"))
 		return
 	}
 	answer, err := protojson.Marshal(response)
 	if err != nil {
-		w.Write([]byte("{\"succes\" : false}"))
+		w.Write([]byte("{\"success\" : false}"))
 		return
 	}
 	cookie := http.Cookie{
