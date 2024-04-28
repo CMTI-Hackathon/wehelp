@@ -1,5 +1,7 @@
 import FormPage from './pages/FormPage';
 import HomePage from './pages/HomePage';
+import Auth from './pages/Auth';
+import Chat from './pages/Chat';
 import ChatsMenegerPage from './pages/ChatsMenegerPage';
 import {
   BrowserRouter,
@@ -16,6 +18,8 @@ function App() {
         <Route index element = {<HomePage/>}/>
         <Route path='/forma' element = {<FormPage/>}/>
         <Route path='/chats' element = {<ChatsMenegerPage/>}/>
+        <Route path='/auth' element = {<Auth/>}/>
+        <Route path='/chat/:id' element = {<Chat/>}/>
       </Routes>
     </BrowserRouter>
   )

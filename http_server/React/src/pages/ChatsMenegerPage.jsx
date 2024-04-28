@@ -1,6 +1,7 @@
 import ChatLink from "../components/react/ChatLink";
 import '../components/styles/pages/Chats/chats.css';
 import Header from "../components/react/Header";
+import { Link } from "react-router-dom";
 export default function ChatsMeneger(){
     return(
         <div className="conteiner">
@@ -21,9 +22,9 @@ export default function ChatsMeneger(){
                         </li>
                     </ul>
                 </div>
-                    <ChatLink></ChatLink>
-                    <ChatLink></ChatLink>
-                    <ChatLink></ChatLink>
+                    <Link to='/chat/2'><ChatLink></ChatLink></Link>
+                    <Link to='/chat/3'><ChatLink></ChatLink></Link>
+                    <Link to='/chat/4'><ChatLink></ChatLink></Link>
             </main>
         </div>
         
