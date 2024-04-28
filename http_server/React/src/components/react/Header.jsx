@@ -1,7 +1,6 @@
 import {useEffect, useState} from 'react'
 import helmet from '/imgOfSite/helmet.png'
 import {Link, useNavigate} from "react-router-dom";
-import Cookies from 'js-cookie';
 
 
 export default function Header(){
