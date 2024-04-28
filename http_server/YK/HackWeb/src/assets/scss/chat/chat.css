@@ -165,6 +165,7 @@ header .headerConteiner .navigation .account button:hover {
 .msg-received {
   background-color: #EEEEEE;
   color: #627254;
+  width: -moz-fit-content;
   width: fit-content;
 }
 
@@ -172,7 +173,6 @@ header .headerConteiner .navigation .account button:hover {
   margin-left: auto;
   background-color: #627254;
   color: #EEEEEE;
+  width: -moz-fit-content;
   width: fit-content;
-}
-
-/*# sourceMappingURL=chat.css.map */
+}/*# sourceMappingURL=chat.css.map */
