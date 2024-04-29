@@ -1,0 +1,93 @@
+@import '../../components/wrapper', '../../components/colors';
+.postPage{
+    @extend %wrapper;
+    width: 100%;
+    flex: 1;
+    background-color: $white;
+    border-radius: 10px;
+    .post{
+        .aboutProfile{
+            display: grid;
+            grid-template-columns: 35px 35px auto auto;
+            grid-template-rows: auto auto;
+            border-bottom: 1px solid $dark-green;
+            
+            .goBack{
+                border-radius: 10px 0 0 0;
+                grid-row-start: 1;
+                grid-row-end: 4;
+                align-self: center;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                &:hover{
+                    background-color: #76885ba1;
+                    cursor: pointer;
+                }
+                img{
+                    align-self: center;
+                    height:30px;
+                    width: 30px;
+                }
+            }
+            .imgOfProfile{
+                grid-row-start: 1;
+                grid-row-end: 4;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                img{
+                    height: 30px;
+                    width: 30px;
+                }
+            }
+            .sendMsg{
+                grid-row-start: 1;
+                grid-row-end: 4;
+                grid-column-start: 4;
+                grid-column-end: 5;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: right;
+                padding-right: 10px;
+                .writeTo{
+                    border: 2px solid $dark-green;
+                    color: $dark-green;
+                    padding: 3px;
+                    border-radius: 10px;
+                    font-weight: 550;
+                    font-size: 12pt;
+                    &:hover{
+                        color: $white;
+                        background-color: $green;
+                    }
+                }
+            }
+        }
+        article{
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 20px;
+            background-color: $dark-white;
+            .titleOfArticle{
+                p{
+                    font-size: 15pt;
+                    font-weight: 600;
+                    text-align: justify;
+                } 
+            }
+            .textOfArticle{
+                p{
+                    font-size: 14pt;
+                    font-weight: 450;
+                    text-align: justify;
+                }
+            }
+        }
+    }
+}

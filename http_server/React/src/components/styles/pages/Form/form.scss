@@ -45,7 +45,7 @@
                 @include input(40rem);
                 resize: none
             }
-            .sendBtn{
+            .sendBtn1{
                 @extend %green-btn;
                 height: 50px;
             }
