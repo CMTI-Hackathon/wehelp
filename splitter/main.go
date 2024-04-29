@@ -292,7 +292,21 @@ func getLastPosts(w http.ResponseWriter, r *http.Request) {
 	}
 	client := pb.NewPostServiceClient(conn)
 	client.GetNewPosts(context.Background(), &pb.Empty{})
-	//add response
+	response, err := client.GetNewPosts(context.Background(), &pb.Empty{})
+	if err != nil {
+		println("error:", err.Error())
+		w.Write([]byte("{}"))
+		return
+	}
+	answer, err := protojson.Marshal(response)
+
+	if err != nil {
+		println(err.Error())
+		w.Write([]byte("{}"))
+		return
+	}
+	w.Write(answer)
+
 }
 func getPost(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "GET" {
@@ -336,7 +350,7 @@ func main() {
 	http.HandleFunc("/api/login", loginUser)
 	http.HandleFunc("/api/getUserById", getUserById)
 	http.HandleFunc("/api/createPost", createPost)
-	http.HandleFunc("/api/getPosts", getLastPosts)
+	http.HandleFunc("/api/getLastPosts", getLastPosts)
 	http.HandleFunc("/api/getPost", getPost)
 
 	log.Fatal(http.ListenAndServe(":4010", nil))

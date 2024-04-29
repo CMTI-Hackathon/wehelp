@@ -67,6 +67,34 @@ func (s *server) GetPost(context context.Context, request *pb.Post) (*pb.Post, e
 	}
 	return &result, nil
 }
+func (s *server) GetNewPosts(ctx context.Context, request *pb.Empty) (*pb.Posts, error) {
+	db, err := sql.Open("mysql", cfg.FormatDSN())
+	if err != nil {
+
+		log.Fatal(err)
+	}
+	defer db.Close()
+	rows, err := db.Query("SELECT id,header,text, type, userId FROM posts ORDER BY creationDate DESC")
+	if err != nil {
+		println(err.Error())
+		return &pb.Posts{}, nil
+	}
+	defer rows.Close()
+	var result pb.Posts
+	for rows.Next() {
+		var postId, userId int
+		var post pb.Post
+		err = rows.Scan(&postId, &post.Header, &post.Text, &post.Type, &userId)
+		if err != nil {
+			println(err.Error())
+			return &pb.Posts{}, nil
+		}
+		post.UserId = strconv.Itoa(userId)
+		post.PostId = strconv.Itoa(postId)
+		result.PostArray = append(result.PostArray, &post)
+	}
+	return &result, nil
+}
 
 func main() {
 	db, err := sql.Open("mysql", cfg.FormatDSN())
