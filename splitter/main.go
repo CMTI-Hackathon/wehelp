@@ -234,11 +234,17 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("{}"))
 		return
 	}
-	confirmSession(session.Value, userid.Value)
+	if !confirmSession(session.Value, userid.Value) {
+		w.Write([]byte("{}"))
+		return
+	}
+
 	conn, err := grpc.Dial("post-service:4012", grpc.WithTransportCredentials(insecure.NewCredentials()))
+
 	if err != nil {
 		w.Write([]byte("{}"))
 		println(err.Error())
+		return
 	}
 	client := pb.NewPostServiceClient(conn)
 	var post Post
@@ -254,7 +260,7 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	response, err := client.CreatePost(context.Background(), &pb.Post{
-		UserId: post.UserId,
+		UserId: userid.Value,
 		Header: post.Header,
 		Text:   post.Text,
 		Type:   post.Type,
