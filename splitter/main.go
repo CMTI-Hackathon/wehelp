@@ -188,7 +188,6 @@ func getUserById(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("{}"))
 		return
 	}
-
 	println("new getUserById request", r.URL.Path)
 	vals, err := url.ParseQuery(r.URL.RawQuery)
 	if err != nil {
@@ -223,6 +222,19 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("{}"))
 		return
 	}
+	session, err := r.Cookie("session_id")
+	if err != nil {
+		println(err.Error())
+		w.Write([]byte("{}"))
+		return
+	}
+	userid, err := r.Cookie("user_id")
+	if err != nil {
+		println(err.Error())
+		w.Write([]byte("{}"))
+		return
+	}
+	confirmSession(session.Value, userid.Value)
 	conn, err := grpc.Dial("post-service:4012", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		w.Write([]byte("{}"))
