@@ -194,6 +194,7 @@ func getUserById(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("{}"))
 		return
 	}
+	println("id = ", vals.Get("id"))
 	conn, err := grpc.Dial("auth-service:4011", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		println("error:", err.Error())
