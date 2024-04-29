@@ -26,7 +26,7 @@ export default function Header() {
         const parts = value.split(`; ${"session_id"}=`);
         if (parts.length === 2) cookie = parts.pop().split(';').shift();
         if (cookie === undefined) {
-            history('#/auth',{replace:true});
+            history('/auth',{replace:true});
         }
 
     })
@@ -60,7 +60,7 @@ export default function Header() {
                     <nav className={isBurgClick ? 'navigation active' : 'navigation'}>
                         <ul>
                             {/* <li><Link to="/chats">Чати</Link></li> */}
-                            <li><Link to="#/" replace:true >Дім</Link></li>
+                            <li><Link to="/" replace:true >Дім</Link></li>
                             <li><Link to="/forma">Допомоги!</Link></li>
                             
                             <li><div className='account' >{cookie === undefined ?
