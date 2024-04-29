@@ -68,10 +68,10 @@ export default function FormPage(){
                 'Content-Typer':'application/json'
             }
         })
-        console.log(response);
         if(!response.ok){
             throw new Error("fail");
         }
+		history('/');
     }
     
     function handleSubmit(event){
@@ -100,7 +100,7 @@ export default function FormPage(){
                             <textarea required name="text" className='text' id="" rows="10" maxLength='900' minLength='40' placeholder='Опишіть проблему в загальному'></textarea>
                         </label>
                         <label htmlFor="">
-                            <p>Допопмога, на яку ви очікуєте</p>
+                            <p>Допомога, на яку ви очікуєте</p>
                             <select className='typeOfHelp' name="type" required>
                                 <option name='money' value="money">Кошти</option>
                                 <option name='care' value="care">Догляд</option>
