@@ -50,7 +50,8 @@ export default function FormPage(){
 	if (parts.length === 2) cookie = parts.pop().split(';').shift();
 
 	if (cookie === undefined) {
-		history('/auth',{replace:true});
+		// history('/auth',{replace:true});
+		setTimeout(history,0,"/auth")
 	}
 	else{
 		CheckUser(id,history);

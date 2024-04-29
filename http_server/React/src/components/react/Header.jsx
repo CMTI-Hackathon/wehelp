@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react'
 import helmet from '/imgOfSite/helmet.png'
-import { Link, useNavigate } from "react-router-dom";
-
-
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
+function logout(){
+    Cookies.remove("session_id");
+    Cookies.remove("user_id");
+    location.reload();
+}
 
 export default function Header() {
 
@@ -27,8 +31,8 @@ export default function Header() {
         if (parts.length === 2) cookie = parts.pop().split(';').shift();
         if (cookie === undefined) {
             history('/auth',{replace:true});
+            // setTimeout(history,0,'/auth'
         }
-
     })
     return (
         <header className={isBurgClick ? 'active' : null} >
@@ -60,9 +64,10 @@ export default function Header() {
                     <nav className={isBurgClick ? 'navigation active' : 'navigation'}>
                         <ul>
                             {/* <li><Link to="/chats">Чати</Link></li> */}
-                            <li><Link to="/" replace:true >Дім</Link></li>
+                            {/* <li><Link to="/" replace:true >Дім</Link></li> */}
+                            <li><a href=''>Дім</a></li>
                             <li><Link to="/forma">Допомоги!</Link></li>
-                            
+                            <li><Link onClick={logout}>Вийти</Link></li>
                             <li><div className='account' >{cookie === undefined ?
 
                                 <img src={helmet} alt="profile" className='imgOfYourProfile' />
