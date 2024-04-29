@@ -97,6 +97,7 @@ func (s *server) ConfirmSession(ctx context.Context, request *pb.User) (*pb.Conf
 	if (request.SessionId == strconv.Itoa(userId)) && userId > 0 {
 		result.Result = true
 	}
+	db.Query("UPDATE user_sessions SET creationDate=NOW() WHERE session_id= ?", request.SessionId)
 	return &result, nil
 }
 

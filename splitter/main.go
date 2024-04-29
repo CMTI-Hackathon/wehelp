@@ -225,17 +225,17 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 	session, err := r.Cookie("session_id")
 	if err != nil {
 		println(err.Error())
-		w.Write([]byte("{}"))
+		w.Write([]byte("{\"error\":\"unauthorized\"}"))
 		return
 	}
 	userid, err := r.Cookie("user_id")
 	if err != nil {
 		println(err.Error())
-		w.Write([]byte("{}"))
+		w.Write([]byte("{\"error\":\"unauthorized\"}"))
 		return
 	}
 	if !confirmSession(session.Value, userid.Value) {
-		w.Write([]byte("{}"))
+		w.Write([]byte("{\"error\":\"unauthorized\"}"))
 		return
 	}
 
@@ -285,6 +285,21 @@ func getLastPosts(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("{}"))
 		return
 	}
+
+	session, err := r.Cookie("session_id")
+	if err == nil {
+		userid, err := r.Cookie("user_id")
+		if err != nil {
+			println(err.Error())
+			w.Write([]byte("{\"error\":\"unauthorized\"}"))
+			return
+		}
+		if !confirmSession(session.Value, userid.Value) {
+			w.Write([]byte("{\"error\":\"unauthorized\"}"))
+			return
+		}
+	}
+
 	conn, err := grpc.Dial("post-service:4012", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		w.Write([]byte("{}"))
