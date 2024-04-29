@@ -1,7 +1,7 @@
 // import '../scss/auth/auth.css'
 import Header from '../components/react/Header'
 import '../components/styles/pages/Chat/chat.css'
-// import '../jquery-3.7.1.min.js'
+import '../jquery-3.7.1.min.js'
 import React, { useState,useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 

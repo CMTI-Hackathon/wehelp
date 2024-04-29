@@ -37,9 +37,9 @@ export default function Header(){
                     </div>
                     <nav className={isBurgClick?'navigation active':'navigation'}>
                         <ul>
-                            <li><Link to="/">Дім</Link></li>
-                            <li><Link to="/chats">Чати</Link></li>
-                            <li><Link to="/forma">Допомоги!</Link></li>
+                            <li onClick={document.body.style.overflow = "visible"}><Link to="/">Дім</Link></li>
+                            <li onClick={document.body.style.overflow = "visible"}><Link to="/chats">Чати</Link></li>
+                            <li onClick={document.body.style.overflow = "visible"}><Link to="/forma">Допомоги!</Link></li>
                         
                             <li><div className='account' >{isLogin?
                             

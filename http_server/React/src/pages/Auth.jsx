@@ -1,7 +1,7 @@
 import '../components/styles/pages/Auth/auth.css'
+import '../jquery-3.7.1.min.js'
 import React, { useState, useEffect } from 'react'
-import { Link } from "react-router-dom"
-
+import {Link} from "react-router-dom"
 async function loginSend(e) {
 	e.preventDefault();
 	const email = document.getElementById("email");
@@ -27,7 +27,7 @@ function loginForm() {
 	return (
 		<div className='authBody'>
 			<form onSubmit={loginSend} className='auth-form' id='loginform'>
-				<h2>Увійдіть у свій аккаунт</h2>
+				<h2>Увійдіть в свійт аккаунт</h2>
 
 				<input type="text" id='email' placeholder="Електронна пошта"  required />
 				<input type="password" id='password' placeholder="Пароль"  required />
@@ -37,16 +37,20 @@ function loginForm() {
 	);
 }
 
+
+
 async function registerSend(e) {
 	e.preventDefault();
 
+	const password = document.getElementById("password");
+	if (!(password === document.getElementById("cPassword"))) { return false };
 
-	const password = document.getElementById("password").value;
-	if (!(password === document.getElementById("cPassword").value)) { return false };
+	const username = document.getElementById("name");
 
-	const username = document.getElementById("name").value;
-	const email = document.getElementById("email").value;
-	const role = document.querySelector('input[name="type"]:checked').value == "Helper";
+	// add check if email is taken
+	const email = document.getElementById("email");
+
+	const role = document.getElementById("helper").checked;
 
 
 	const response = await fetch('/api/registerUser', {
@@ -58,20 +62,12 @@ async function registerSend(e) {
 			username, email, password, role
 		})
 	})
-	.then(res =>{
-		if(!res.ok){
-			throw new Error(`HTTP error ${res.status}`);
-		}
-		return res.json();
-	})
-	.catch((error) => console.error("Error:",error));
-
-	
-	if(response.success === true){
-		window.location.pathname = '/';
+	if(response.json().valid == true){
+		<Link to="/chat/2"></Link>
 	}else{
 		return false;
 	}
+	// return true;
 }
 
 function registerForm() {
@@ -126,6 +122,7 @@ export default function Auth() {
 	return (
 
 		<div className='body'>
+
 			<div className='container'>
 				<div className='logoContainer'>
 					<img src="" alt="LOGO" className='logo' />

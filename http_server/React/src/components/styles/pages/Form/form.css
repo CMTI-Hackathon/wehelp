@@ -36,18 +36,6 @@ header .headerConteiner {
   align-items: center;
   position: relative;
 }
-header .headerConteiner .logoOfTheSite {
-  margin-left: 5px;
-  justify-self: start;
-  align-self: center;
-  height: 30px;
-  position: relative;
-}
-header .headerConteiner .logoOfTheSite .logoOfTheSitePng {
-  height: 30px;
-  width: auto;
-  border-radius: 1000px;
-}
 header .headerConteiner .search {
   position: relative;
   height: 30px;
@@ -195,15 +183,16 @@ header .headerConteiner .burgerMenu .account::before {
   width: 1px;
   background-color: #627254;
 }
-header .headerConteiner .burgerMenu .account button {
-  height: 30px;
-  width: 55px;
+header .headerConteiner .burgerMenu .account .log_in, header .headerConteiner .burgerMenu .account .sign_in {
+  display: flex;
+  align-items: center;
+  padding: 5px;
   border: 2px solid #627254;
   border-radius: 6px;
   color: #627254;
   transition: all 0.3s;
 }
-header .headerConteiner .burgerMenu .account button:hover {
+header .headerConteiner .burgerMenu .account .log_in:hover, header .headerConteiner .burgerMenu .account .sign_in:hover {
   cursor: pointer;
   background-color: #76885B;
   color: #EEEEEE;
@@ -215,13 +204,13 @@ header .headerConteiner .burgerMenu .account button:hover {
   margin-right: auto;
 }
 
-.formPage .formConteiner form .sendBtn {
+.formPage .formConteiner form .sendBtn1 {
   border: 2px solid #627254;
   border-radius: 6px;
   color: #627254;
   transition: all 0.3s;
 }
-.formPage .formConteiner form .sendBtn:hover {
+.formPage .formConteiner form .sendBtn1:hover {
   cursor: pointer;
   background-color: #76885B;
   color: #EEEEEE;
@@ -301,7 +290,7 @@ header .headerConteiner .burgerMenu .account button:hover {
   border-bottom: 4px solid #627254;
   box-shadow: 0px -2px 8px rgba(118, 136, 91, 0.631372549);
 }
-.formPage .formConteiner form .sendBtn {
+.formPage .formConteiner form .sendBtn1 {
   height: 50px;
 }
 .formPage .formConteiner form .typeOfHelp {
