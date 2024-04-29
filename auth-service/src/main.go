@@ -46,6 +46,7 @@ func deleteOldSessions() {
 
 func generateSession(userId int) string {
 	db, err := sql.Open("mysql", cfg.FormatDSN())
+	println("Generating session", userId)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -54,9 +55,12 @@ func generateSession(userId int) string {
 	var session_id int64
 	res, err := db.Exec("INSERT INTO user_sessions (id, creationDate) VALUES (?, NOW())", userId)
 	if err != nil {
+		println("INSERT SESSION ERROR")
 		println(err.Error())
 	}
 	if err != nil {
+		println("IDK WHAT KIND OF ERROR IS IT")
+
 		rows := db.QueryRow("SELECT session_id FROM user_sessions WHERE id = ?", userId)
 		err = rows.Scan(&session_id)
 		if err != nil {
@@ -79,6 +83,7 @@ func (s *server) ConfirmSession(ctx context.Context, request *pb.User) (*pb.Conf
 		Result: false,
 	}
 	db, err := sql.Open("mysql", cfg.FormatDSN())
+	println("session confirm request", request.UserId)
 
 	if err != nil {
 		println("Error to connect to database")
@@ -96,9 +101,11 @@ func (s *server) ConfirmSession(ctx context.Context, request *pb.User) (*pb.Conf
 		println(err.Error())
 		return &result, nil
 	}
+	println("session_id", userId)
 	if (request.SessionId == strconv.Itoa(userId)) && userId > 0 {
 		result.Result = true
 	}
+	println("requested session id", request.SessionId, "actual session id", userId)
 	db.Exec("UPDATE user_sessions SET creationDate=NOW() WHERE session_id= ?", request.SessionId)
 	return &result, nil
 }
@@ -166,6 +173,7 @@ func (s *server) Login(ctx context.Context, request *pb.LoginRequest) (*pb.AuthR
 		response.UserId = ""
 		return &response, nil
 	}
+	println("UserID:", userId)
 	response.UserId = strconv.Itoa(userId)
 	response.Success = true
 	response.SessionId = generateSession(userId)

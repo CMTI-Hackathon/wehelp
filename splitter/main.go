@@ -51,6 +51,7 @@ func clear_cookie(w http.ResponseWriter) {
 }
 func confirmSession(userId string, sessionId string) bool {
 	conn, err := grpc.Dial("auth-service:4011", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	println("confirming session", userId, sessionId)
 	if err != nil {
 		println("error:", err.Error())
 
@@ -112,6 +113,8 @@ func loginUser(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("{\"success\" : false}"))
 		return
 	}
+	println("Login successful. Session id:", response.SessionId)
+	println("Login successful. UserID id:", response.UserId)
 	cookie := http.Cookie{
 		Name:     "session_id",
 		Value:    response.SessionId,
@@ -226,7 +229,7 @@ func getUserById(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte("{\"error\":\"unauthorized\"}"))
 			return
 		}
-		if !confirmSession(session.Value, userid.Value) {
+		if !confirmSession(userid.Value, session.Value) {
 			clear_cookie(w)
 			w.Write([]byte("{\"error\":\"unauthorized\"}"))
 			return
@@ -277,7 +280,7 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("{\"error\":\"unauthorized\"}"))
 		return
 	}
-	if !confirmSession(session.Value, userid.Value) {
+	if !confirmSession(userid.Value, session.Value) {
 		clear_cookie(w)
 		w.Write([]byte("{\"error\":\"unauthorized\"}"))
 		return
@@ -340,7 +343,7 @@ func getLastPosts(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte("{\"error\":\"unauthorized\"}"))
 			return
 		}
-		if !confirmSession(session.Value, userid.Value) {
+		if !confirmSession(userid.Value, session.Value) {
 			clear_cookie(w)
 			w.Write([]byte("{\"error\":\"unauthorized\"}"))
 			return
@@ -383,7 +386,7 @@ func getPost(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte("{\"error\":\"unauthorized\"}"))
 			return
 		}
-		if !confirmSession(session.Value, userid.Value) {
+		if !confirmSession(userid.Value, session.Value) {
 			clear_cookie(w)
 
 			w.Write([]byte("{\"error\":\"unauthorized\"}"))
