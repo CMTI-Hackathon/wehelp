@@ -10,6 +10,7 @@ import (
 	"log"
 	"net"
 	"strconv"
+	"time"
 
 	pb "wehelp_goservice/grpc"
 
@@ -78,6 +79,7 @@ func (s *server) ConfirmSession(ctx context.Context, request *pb.User) (*pb.Conf
 		Result: false,
 	}
 	db, err := sql.Open("mysql", cfg.FormatDSN())
+
 	if err != nil {
 		println("Error to connect to database")
 		return &result, nil
@@ -97,7 +99,7 @@ func (s *server) ConfirmSession(ctx context.Context, request *pb.User) (*pb.Conf
 	if (request.SessionId == strconv.Itoa(userId)) && userId > 0 {
 		result.Result = true
 	}
-	db.Query("UPDATE user_sessions SET creationDate=NOW() WHERE session_id= ?", request.SessionId)
+	db.Exec("UPDATE user_sessions SET creationDate=NOW() WHERE session_id= ?", request.SessionId)
 	return &result, nil
 }
 
@@ -210,7 +212,11 @@ func main() {
 		log.Fatal(err)
 		return
 	}
-	defer db.Close()
+	db.SetConnMaxLifetime(time.Minute * 1)
+	db.SetMaxOpenConns(0)
+	db.SetConnMaxLifetime(3)
+	db.SetMaxIdleConns(100)
+	db.Close()
 
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 4011))
 	if err != nil {

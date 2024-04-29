@@ -11,6 +11,7 @@ services:
     image: mariadb
     ports:
       - '3306:3306'
+    command: --max_connections=1000
     restart: always
     environment:
       MARIADB_ROOT_PASSWORD: example_password

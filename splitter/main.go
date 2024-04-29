@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"strings"
 	pb "wehelp_goservice/grpc"
 
 	"google.golang.org/grpc"
@@ -26,6 +27,28 @@ type Post struct {
 	UserId, Text, Header, Type string
 }
 
+func clear_cookie(w http.ResponseWriter) {
+	cookie1 := http.Cookie{
+		Name:     "session_id",
+		Value:    "",
+		Path:     "/",
+		MaxAge:   0,
+		HttpOnly: false,
+		Secure:   true,
+		SameSite: http.SameSiteLaxMode,
+	}
+	cookie2 := http.Cookie{
+		Name:     "user_id",
+		Value:    "",
+		Path:     "/",
+		MaxAge:   0,
+		HttpOnly: false,
+		Secure:   true,
+		SameSite: http.SameSiteLaxMode,
+	}
+	http.SetCookie(w, &cookie1)
+	http.SetCookie(w, &cookie2)
+}
 func confirmSession(userId string, sessionId string) bool {
 	conn, err := grpc.Dial("auth-service:4011", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
@@ -194,6 +217,21 @@ func getUserById(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("{}"))
 		return
 	}
+	session, err := r.Cookie("session_id")
+	if err == nil {
+		userid, err := r.Cookie("user_id")
+		if err != nil {
+			clear_cookie(w)
+			println(err.Error())
+			w.Write([]byte("{\"error\":\"unauthorized\"}"))
+			return
+		}
+		if !confirmSession(session.Value, userid.Value) {
+			clear_cookie(w)
+			w.Write([]byte("{\"error\":\"unauthorized\"}"))
+			return
+		}
+	}
 	println("id = ", vals.Get("id"))
 	conn, err := grpc.Dial("auth-service:4011", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
@@ -202,7 +240,9 @@ func getUserById(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	client := pb.NewSplitterAuthClient(conn)
-	response, err := client.GetUserById(context.Background(), &pb.User{UserId: vals.Get("id")})
+	userId := vals.Get("id")
+	formatedUserId := strings.Replace(userId, "\"", "", -1)
+	response, err := client.GetUserById(context.Background(), &pb.User{UserId: formatedUserId})
 	if err != nil {
 		println("error:", err.Error())
 		w.Write([]byte("{}"))
@@ -232,10 +272,13 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 	userid, err := r.Cookie("user_id")
 	if err != nil {
 		println(err.Error())
+		clear_cookie(w)
+
 		w.Write([]byte("{\"error\":\"unauthorized\"}"))
 		return
 	}
 	if !confirmSession(session.Value, userid.Value) {
+		clear_cookie(w)
 		w.Write([]byte("{\"error\":\"unauthorized\"}"))
 		return
 	}
@@ -292,10 +335,13 @@ func getLastPosts(w http.ResponseWriter, r *http.Request) {
 		userid, err := r.Cookie("user_id")
 		if err != nil {
 			println(err.Error())
+			clear_cookie(w)
+
 			w.Write([]byte("{\"error\":\"unauthorized\"}"))
 			return
 		}
 		if !confirmSession(session.Value, userid.Value) {
+			clear_cookie(w)
 			w.Write([]byte("{\"error\":\"unauthorized\"}"))
 			return
 		}
@@ -338,6 +384,8 @@ func getPost(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		if !confirmSession(session.Value, userid.Value) {
+			clear_cookie(w)
+
 			w.Write([]byte("{\"error\":\"unauthorized\"}"))
 			return
 		}
@@ -355,8 +403,9 @@ func getPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	client := pb.NewPostServiceClient(conn)
-
-	response, err := client.GetPost(context.Background(), &pb.Post{PostId: vals.Get("id")})
+	userId := vals.Get("id")
+	formatedUserId := strings.Replace(userId, "\"", "", -1)
+	response, err := client.GetPost(context.Background(), &pb.Post{PostId: formatedUserId})
 	if err != nil {
 		println("error:", err.Error())
 		w.Write([]byte("{}"))
