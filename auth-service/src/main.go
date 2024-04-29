@@ -171,7 +171,7 @@ func (s *server) Login(ctx context.Context, request *pb.LoginRequest) (*pb.AuthR
 }
 func (s *server) GetUserById(ctx context.Context, request *pb.User) (*pb.User, error) {
 	db, err := sql.Open("mysql", cfg.FormatDSN())
-	println("new getuserbyid reqiest")
+	println("new getuserbyid reqгest", request.UserId)
 	result := pb.User{
 		Username:  "",
 		UserId:    "",
